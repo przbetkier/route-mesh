@@ -37,13 +37,15 @@ public class Road {
     private Double maxAxleLoad;
     // Number 0..1 representing traffic on that road
     private Double trafficFactor;
+    private Integer width;
 
     public Road() {
 
     }
 
     public Road(String name, Node startNode, Node endNode, RoadDirection direction, Set<Admin> admins, RoadType type,
-                Set<String> numbers, TreeSet<Double> kmRange, Integer lines, Double maxAxleLoad, Double trafficFactor) {
+                Set<String> numbers, TreeSet<Double> kmRange, Integer lines, Double maxAxleLoad, Double trafficFactor,
+                Integer width) {
         this.name = name;
         this.startNode = startNode;
         this.endNode = endNode;
@@ -55,6 +57,7 @@ public class Road {
         this.lines = lines;
         this.maxAxleLoad = maxAxleLoad;
         this.trafficFactor = trafficFactor;
+        this.width = width;
     }
 
     public Long getId() {
@@ -103,5 +106,9 @@ public class Road {
 
     public Double getTrafficFactor() {
         return trafficFactor;
+    }
+
+    public Integer getWidth() {
+        return width;
     }
 }
