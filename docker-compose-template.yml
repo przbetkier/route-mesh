@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  route-mesh:
+    image: przbetkier/route-mesh
+    environment:
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USERNAME=neo4j
+      - NEO4J_PASS=neo4j
+    ports:
+      - "8081:8081"
+    networks:
+      - internal-net
+
+  route-mesh-frontend:
+    image: przbetkier/route-mesh-frontend
+    ports:
+      - 80:80
+    networks:
+      - internal-net
+
+  neo4j:
+    image: neo4j
+    networks:
+      - internal-net
+    ports:
+      - 7474:7474
+      - 7473:7473
+      - 7687:7687
+    volumes:
+      - ./logs:/var/lib/neo4j/logs
+      - ./databases:/var/lib/neo4j/data/databases
+
+networks:
+  internal-net:
+    driver: bridge
