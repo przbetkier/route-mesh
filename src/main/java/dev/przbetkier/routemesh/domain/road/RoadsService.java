@@ -60,7 +60,8 @@ public class RoadsService {
                                    new TreeSet<>(roadRequest.getKmRange()),
                                    roadRequest.getLines(),
                                    roadRequest.getMaxAxleLoad(),
-                                   null);
+                                   null,
+                                   roadRequest.getWidth());
 
         return roadRepository.save(roadToSave);
     }

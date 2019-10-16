@@ -25,11 +25,12 @@ public class RoadResponse {
     private final Double maxAxleLoad;
     private final Double trafficFactor;
     private final Set<SimpleAdmin> admins;
+    private final Integer width;
 
 
     public RoadResponse(Long id, String name, SimpleNode startNode, SimpleNode endNode, RoadDirection roadDirection,
                         RoadType type, Set<String> numbers, TreeSet<Double> kmRange, Integer lines, Double maxAxleLoad,
-                        Double trafficFactor, Set<SimpleAdmin> admins) {
+                        Double trafficFactor, Set<SimpleAdmin> admins, Integer width) {
         this.id = id;
         this.startNode = startNode;
         this.endNode = endNode;
@@ -42,6 +43,7 @@ public class RoadResponse {
         this.maxAxleLoad = maxAxleLoad;
         this.trafficFactor = trafficFactor;
         this.admins = admins;
+        this.width = width;
     }
 
     public Long getId() {
@@ -92,6 +94,10 @@ public class RoadResponse {
         return admins;
     }
 
+    public Integer getWidth() {
+        return width;
+    }
+
     public static RoadResponse fromRoad(Road road) {
         return new RoadResponse(road.getId(),
                                 road.getName(),
@@ -108,7 +114,8 @@ public class RoadResponse {
                                         .getAdmins()
                                         .stream()
                                         .map(SimpleAdmin::new)
-                                        .collect(Collectors.toSet()) : Collections.emptySet());
+                                        .collect(Collectors.toSet()) : Collections.emptySet(),
+                                road.getWidth());
     }
 
     private static boolean hasAdmins(Road road) {
