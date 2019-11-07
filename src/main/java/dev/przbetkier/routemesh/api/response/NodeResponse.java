@@ -53,13 +53,11 @@ public class NodeResponse {
                                 node.getName(),
                                 node.getLatitude(),
                                 node.getLongitude(),
-                                node
-                                        .getStartRoads()
+                                node.getStartRoads()
                                         .stream()
                                         .map(r -> new NodeRoad(r.getId(), r.getName()))
                                         .collect(Collectors.toSet()),
-                                node
-                                        .getEndRoads()
+                                node.getEndRoads()
                                         .stream()
                                         .map(r -> new NodeRoad(r.getId(), r.getName()))
                                         .collect(Collectors.toSet()));

@@ -27,7 +27,7 @@ public class Admin {
     public Admin() {
     }
 
-    Admin(String name, String address, String postalCode, String telephone, String email, String fax, Set<Road> roads) {
+    public Admin(String name, String address, String postalCode, String telephone, String email, String fax, Set<Road> roads) {
         this.name = name;
         this.address = address;
         this.postalCode = postalCode;

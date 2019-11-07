@@ -27,7 +27,7 @@ public class Node {
     public Node() {
     }
 
-    Node(String name, Double latitude, Double longitude, Set<Road> startRoads, Set<Road> endRoads) {
+    public Node(String name, Double latitude, Double longitude, Set<Road> startRoads, Set<Road> endRoads) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
