@@ -9,5 +9,4 @@ public class RouteMeshApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RouteMeshApplication.class, args);
 	}
-
 }

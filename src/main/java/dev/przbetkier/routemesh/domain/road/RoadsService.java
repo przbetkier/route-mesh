@@ -33,10 +33,6 @@ public class RoadsService {
         return roadRepository.findAll();
     }
 
-    public List<Road> getAllByType(RoadDirection roadDirection) {
-        return roadRepository.findAllByDirection(roadDirection);
-    }
-
     public void delete(Long roadId) {
         logger.info("Deleting road [{}]", roadId);
         roadRepository.deleteById(roadId);
@@ -50,19 +46,20 @@ public class RoadsService {
         Set<Admin> admins = new HashSet<>();
         roadRequest.getAdmins().forEach(id -> adminService.findById(id).ifPresent(admins::add));
 
-        Road roadToSave = new Road(roadRequest.getName(),
-                                   start,
-                                   end,
-                                   roadRequest.getDirection(),
-                                   admins,
-                                   roadRequest.getType(),
-                                   new HashSet<>(roadRequest.getNumbers()),
-                                   new TreeSet<>(roadRequest.getKmRange()),
-                                   roadRequest.getLines(),
-                                   roadRequest.getMaxAxleLoad(),
-                                   null,
-                                   roadRequest.getWidth());
+        Road road = RoadBuilder.builder()
+                .withName(roadRequest.getName())
+                .withStartNode(start)
+                .withEndNode(end)
+                .withDirection(roadRequest.getDirection())
+                .withAdmins(admins)
+                .withType(roadRequest.getType())
+                .withNumbers(new HashSet<>(roadRequest.getNumbers()))
+                .withKmRange(new TreeSet<>(roadRequest.getKmRange()))
+                .withLines(roadRequest.getLines())
+                .withMaxAxleLoad(roadRequest.getMaxAxleLoad())
+                .withWidth(roadRequest.getWidth())
+                .build();
 
-        return roadRepository.save(roadToSave);
+        return roadRepository.save(road);
     }
 }

@@ -1,9 +1,7 @@
 package dev.przbetkier.routemesh.api;
 
 import dev.przbetkier.routemesh.api.response.NodeResponse;
-import dev.przbetkier.routemesh.domain.node.Node;
 import dev.przbetkier.routemesh.domain.node.NodeService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
