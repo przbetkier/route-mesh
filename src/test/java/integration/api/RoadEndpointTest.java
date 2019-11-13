@@ -7,10 +7,11 @@ import dev.przbetkier.routemesh.domain.road.Road;
 import integration.IntegrationTest;
 import integration.commons.NodeFactory;
 import integration.commons.RoadFactory;
+import integration.commons.helpers.RestResponsePage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
@@ -18,13 +19,15 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
 import static integration.commons.NodeFactory.simpleWithName;
-import static integration.commons.RoadRequestFactory.*;
+import static integration.commons.RoadRequestFactory.simpleRoadRequest;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.http.HttpMethod.*;
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -38,12 +41,16 @@ class RoadEndpointTest extends IntegrationTest {
         createRoads(roadsCount);
 
         // when
-        ResponseEntity<RoadResponse[]> response = restTemplate.getForEntity(localUrl("/roads"), RoadResponse[].class);
+        ResponseEntity<RestResponsePage<RoadResponse>> response = restTemplate.exchange(localUrl("/roads?page=0"),
+                                                                                        GET,
+                                                                                        null,
+                                                                                        // DO NOT REMOVE EXPLICIT TYPE (https://bugs.openjdk.java.net/browse/JDK-8203195)
+                                                                                        new ParameterizedTypeReference<RestResponsePage<RoadResponse>>() {});
 
         // then
         assertEquals(OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(roadsCount, response.getBody().length);
+        assertEquals(roadsCount, response.getBody().getContent().size());
     }
 
     @Test
