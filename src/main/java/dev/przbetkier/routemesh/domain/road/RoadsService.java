@@ -7,10 +7,12 @@ import dev.przbetkier.routemesh.domain.node.Node;
 import dev.przbetkier.routemesh.domain.node.NodeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -29,8 +31,8 @@ public class RoadsService {
         this.adminService = adminService;
     }
 
-    public List<Road> getAll() {
-        return roadRepository.findAll();
+    public Page<Road> getAll(int page, int size) {
+        return roadRepository.findAll(PageRequest.of(page, size, Sort.by("name")));
     }
 
     public void delete(Long roadId) {
