@@ -18,7 +18,7 @@ import org.testcontainers.containers.Neo4jContainer;
 
 @SpringBootTest(classes = RouteMeshApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("integration")
-public class IntegrationTest {
+public abstract class IntegrationTest {
 
     @RegisterExtension
     private static Neo4jContainer neo4jContainer = new Neo4jContainer().withAdminPassword(null);

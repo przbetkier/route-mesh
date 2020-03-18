@@ -2,7 +2,6 @@ package integration.api;
 
 import dev.przbetkier.routemesh.api.response.NodeResponse;
 import dev.przbetkier.routemesh.domain.node.Node;
-import dev.przbetkier.routemesh.domain.road.Road;
 import integration.IntegrationTest;
 import integration.commons.NodeFactory;
 import integration.commons.RoadFactory;
