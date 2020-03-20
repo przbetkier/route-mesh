@@ -2,7 +2,10 @@ package dev.przbetkier.routemesh.domain.road;
 
 import dev.przbetkier.routemesh.domain.admin.Admin;
 import dev.przbetkier.routemesh.domain.node.Node;
+import dev.przbetkier.routemesh.domain.obstacle.Obstacle;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -20,6 +23,7 @@ public class RoadBuilder {
     private Double maxAxleLoad;
     private Double trafficFactor;
     private Integer width;
+    private Set<Obstacle> obstacles = Collections.emptySet();
 
     public static RoadBuilder builder() {
         return new RoadBuilder();
@@ -47,6 +51,11 @@ public class RoadBuilder {
 
     public RoadBuilder withAdmins(Set<Admin> admins) {
         this.admins = admins;
+        return this;
+    }
+
+    public RoadBuilder withObstacles(Set<Obstacle> obstacles) {
+        this.obstacles = obstacles;
         return this;
     }
 
@@ -91,6 +100,7 @@ public class RoadBuilder {
                         endNode,
                         direction,
                         admins,
+                        obstacles,
                         type,
                         numbers,
                         kmRange,
