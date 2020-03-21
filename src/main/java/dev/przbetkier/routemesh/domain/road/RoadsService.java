@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -33,6 +34,11 @@ public class RoadsService {
 
     public Page<Road> getAll(int page, int size) {
         return roadRepository.findAll(PageRequest.of(page, size, Sort.by("name")));
+    }
+
+    public Optional<Road> getById(Long id) {
+        logger.info("Search request for road {}", id);
+        return roadRepository.findById(id);
     }
 
     public void delete(Long roadId) {

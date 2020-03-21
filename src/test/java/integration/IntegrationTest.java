@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.przbetkier.routemesh.RouteMeshApplication;
 import dev.przbetkier.routemesh.domain.admin.AdminRepository;
 import dev.przbetkier.routemesh.domain.node.NodeRepository;
+import dev.przbetkier.routemesh.domain.obstacle.ObstacleRepository;
 import dev.przbetkier.routemesh.domain.road.RoadRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,6 +34,9 @@ public abstract class IntegrationTest {
     public RoadRepository roadRepository;
 
     @Autowired
+    public ObstacleRepository obstacleRepository;
+
+    @Autowired
     public TestRestTemplate restTemplate;
 
     @Autowired
@@ -53,6 +57,7 @@ public abstract class IntegrationTest {
         adminRepository.deleteAll();
         roadRepository.deleteAll();
         nodeRepository.deleteAll();
+        obstacleRepository.deleteAll();
     }
 
     protected String localUrl(String endpoint) {

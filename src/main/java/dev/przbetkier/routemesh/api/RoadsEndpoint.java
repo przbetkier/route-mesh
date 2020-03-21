@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/roads")
@@ -33,6 +35,13 @@ class RoadsEndpoint {
         return roadsService.getAll(page, size).map(RoadResponse::fromRoad);
     }
 
+    @GetMapping("/{roadId}")
+    public ResponseEntity<RoadResponse> getById(@PathVariable Long roadId) {
+        return roadsService.getById(roadId)
+                .map(r -> new ResponseEntity<>(RoadResponse.fromRoad(r), OK))
+                .orElseGet(() -> new ResponseEntity<>(NOT_FOUND));
+    }
+
     @PostMapping
     public ResponseEntity<RoadResponse> addRoad(@RequestBody RoadRequest roadRequest) {
         Road road = roadsService.addRoad(roadRequest);
@@ -40,7 +49,7 @@ class RoadsEndpoint {
     }
 
     @DeleteMapping("/{roadId}")
-    public ResponseEntity deleteRoad(@PathVariable Long roadId) {
+    public ResponseEntity<Void> deleteRoad(@PathVariable Long roadId) {
         roadsService.delete(roadId);
         return ResponseEntity.ok().build();
     }
