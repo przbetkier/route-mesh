@@ -2,6 +2,7 @@ package dev.przbetkier.routemesh.api.response;
 
 import dev.przbetkier.routemesh.domain.admin.Admin;
 import dev.przbetkier.routemesh.domain.node.Node;
+import dev.przbetkier.routemesh.domain.obstacle.ObstacleSubtype;
 import dev.przbetkier.routemesh.domain.obstacle.ObstacleType;
 import dev.przbetkier.routemesh.domain.road.Road;
 import dev.przbetkier.routemesh.domain.road.RoadDirection;
@@ -126,7 +127,8 @@ public class RoadResponse {
                                         .map(ob -> new SimpleObstacle(ob.getId(),
                                                                       ob.getName(),
                                                                       ob.getCity(),
-                                                                      ob.getObstacleType(),
+                                                                      ob.getType(),
+                                                                      ob.getSubtype(),
                                                                       ob.getComment(),
                                                                       ob.isImmovable()))
                                         .collect(Collectors.toSet()) : Collections.emptySet());
@@ -196,16 +198,18 @@ public class RoadResponse {
         private final Long id;
         private final String name;
         private final String city;
-        private final ObstacleType obstacleType;
+        private final ObstacleType type;
+        private final ObstacleSubtype subtype;
         private final String comment;
         private final boolean immovable;
 
-        public SimpleObstacle(Long id, String name, String city, ObstacleType obstacleType, String comment,
-                              boolean immovable) {
+        public SimpleObstacle(Long id, String name, String city, ObstacleType type, ObstacleSubtype subtype,
+                              String comment, boolean immovable) {
             this.id = id;
             this.name = name;
             this.city = city;
-            this.obstacleType = obstacleType;
+            this.type = type;
+            this.subtype = subtype;
             this.comment = comment;
             this.immovable = immovable;
         }
@@ -218,8 +222,8 @@ public class RoadResponse {
             return name;
         }
 
-        public ObstacleType getObstacleType() {
-            return obstacleType;
+        public ObstacleType getType() {
+            return type;
         }
 
         public String getCity() {
@@ -232,6 +236,10 @@ public class RoadResponse {
 
         public boolean isImmovable() {
             return immovable;
+        }
+
+        public ObstacleSubtype getSubtype() {
+            return subtype;
         }
     }
 }

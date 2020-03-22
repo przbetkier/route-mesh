@@ -12,7 +12,8 @@ public class ObstacleBuilder {
     private Double milestone;
     private String url;
     private String comment;
-    private ObstacleType obstacleType;
+    private ObstacleType type;
+    private ObstacleSubtype subtype;
     private Road road;
 
     public static ObstacleBuilder builder() {
@@ -60,7 +61,7 @@ public class ObstacleBuilder {
     }
 
     public ObstacleBuilder withObstacleType(ObstacleType obstacleType) {
-        this.obstacleType = obstacleType;
+        this.type = obstacleType;
         return this;
     }
 
@@ -69,8 +70,13 @@ public class ObstacleBuilder {
         return this;
     }
 
+    public ObstacleBuilder withSubtype(ObstacleSubtype subtype) {
+        this.subtype = subtype;
+        return this;
+    }
+
     public Obstacle build() {
-        return new Obstacle(name, city, latitude, longitude, immovable, milestone, url, comment, obstacleType, road);
+        return new Obstacle(name, city, latitude, longitude, immovable, milestone, url, comment, type, subtype, road);
     }
 
 }
