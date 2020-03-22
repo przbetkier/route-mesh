@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static java.util.Arrays.stream;
 import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,8 +49,8 @@ class AdminEndpointTest extends IntegrationTest {
         // then
         assertEquals(OK, response.getStatusCode());
         assertEquals(2, requireNonNull(response.getBody()).length);
-        assertTrue(Arrays.stream(response.getBody()).anyMatch(a -> a.getName().equals("admin-1")));
-        assertTrue(Arrays.stream(response.getBody()).anyMatch(a -> a.getName().equals("admin-2")));
+        assertTrue(stream(response.getBody()).anyMatch(a -> a.getName().equals("admin-1")));
+        assertTrue(stream(response.getBody()).anyMatch(a -> a.getName().equals("admin-2")));
     }
 
     @Test
@@ -71,7 +72,7 @@ class AdminEndpointTest extends IntegrationTest {
         // then
         assertEquals(OK, response.getStatusCode());
         assertEquals(1, requireNonNull(response.getBody()).length);
-        assertTrue(Arrays.stream(response.getBody()).anyMatch(a -> a.getName().equals(admin.getName())));
+        assertTrue(stream(response.getBody()).anyMatch(a -> a.getName().equals(admin.getName())));
         Set<AdminResponse.SimpleRoad> roads = response.getBody()[0].getManagesRoads();
         roads.forEach(r -> assertAll("properties",
                                      () -> assertEquals(road.getId(), r.getId()),

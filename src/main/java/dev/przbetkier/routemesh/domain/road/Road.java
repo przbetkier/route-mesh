@@ -2,6 +2,7 @@ package dev.przbetkier.routemesh.domain.road;
 
 import dev.przbetkier.routemesh.domain.admin.Admin;
 import dev.przbetkier.routemesh.domain.node.Node;
+import dev.przbetkier.routemesh.domain.obstacle.Obstacle;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -29,6 +30,9 @@ public class Road {
     @Relationship(type = "MANAGES", direction = Relationship.INCOMING)
     private Set<Admin> admins;
 
+    @Relationship(type = "OBSTRUCTS", direction = Relationship.INCOMING)
+    private Set<Obstacle> obstacles;
+
     private RoadType type;
     private Set<String> numbers;
 
@@ -40,17 +44,17 @@ public class Road {
     private Integer width;
 
     public Road() {
-
     }
 
-    public Road(String name, Node startNode, Node endNode, RoadDirection direction, Set<Admin> admins, RoadType type,
-                Set<String> numbers, TreeSet<Double> kmRange, Integer lines, Double maxAxleLoad, Double trafficFactor,
-                Integer width) {
+    public Road(String name, Node startNode, Node endNode, RoadDirection direction, Set<Admin> admins,
+                Set<Obstacle> obstacles, RoadType type, Set<String> numbers, TreeSet<Double> kmRange, Integer lines,
+                Double maxAxleLoad, Double trafficFactor, Integer width) {
         this.name = name;
         this.startNode = startNode;
         this.endNode = endNode;
         this.direction = direction;
         this.admins = admins;
+        this.obstacles = obstacles;
         this.type = type;
         this.numbers = numbers;
         this.kmRange = kmRange;
@@ -110,5 +114,9 @@ public class Road {
 
     public Integer getWidth() {
         return width;
+    }
+
+    public Set<Obstacle> getObstacles() {
+        return obstacles;
     }
 }

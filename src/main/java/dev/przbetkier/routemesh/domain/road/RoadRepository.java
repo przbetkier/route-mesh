@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface RoadRepository extends Neo4jRepository<Road, Long> {
 
+    List<Road> findAll();
+
     Page<Road> findAll(Pageable pageable);
 
     List<Road> findAllByDirection(RoadDirection roadDirection);

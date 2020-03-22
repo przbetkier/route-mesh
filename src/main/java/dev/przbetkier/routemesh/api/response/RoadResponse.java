@@ -2,6 +2,7 @@ package dev.przbetkier.routemesh.api.response;
 
 import dev.przbetkier.routemesh.domain.admin.Admin;
 import dev.przbetkier.routemesh.domain.node.Node;
+import dev.przbetkier.routemesh.domain.obstacle.ObstacleType;
 import dev.przbetkier.routemesh.domain.road.Road;
 import dev.przbetkier.routemesh.domain.road.RoadDirection;
 import dev.przbetkier.routemesh.domain.road.RoadType;
@@ -26,11 +27,11 @@ public class RoadResponse {
     private final Double trafficFactor;
     private final Set<SimpleAdmin> admins;
     private final Integer width;
-
+    private final Set<SimpleObstacle> obstacles;
 
     public RoadResponse(Long id, String name, SimpleNode startNode, SimpleNode endNode, RoadDirection roadDirection,
                         RoadType type, Set<String> numbers, TreeSet<Double> kmRange, Integer lines, Double maxAxleLoad,
-                        Double trafficFactor, Set<SimpleAdmin> admins, Integer width) {
+                        Double trafficFactor, Set<SimpleAdmin> admins, Integer width, Set<SimpleObstacle> obstacles) {
         this.id = id;
         this.startNode = startNode;
         this.endNode = endNode;
@@ -44,6 +45,7 @@ public class RoadResponse {
         this.trafficFactor = trafficFactor;
         this.admins = admins;
         this.width = width;
+        this.obstacles = obstacles;
     }
 
     public Long getId() {
@@ -98,6 +100,10 @@ public class RoadResponse {
         return width;
     }
 
+    public Set<SimpleObstacle> getObstacles() {
+        return obstacles;
+    }
+
     public static RoadResponse fromRoad(Road road) {
         return new RoadResponse(road.getId(),
                                 road.getName(),
@@ -110,17 +116,28 @@ public class RoadResponse {
                                 road.getLines(),
                                 road.getMaxAxleLoad(),
                                 road.getTrafficFactor(),
-                                hasAdmins(road) ? road
-                                        .getAdmins()
+                                hasAdmins(road) ? road.getAdmins()
                                         .stream()
                                         .map(SimpleAdmin::new)
                                         .collect(Collectors.toSet()) : Collections.emptySet(),
-                                road.getWidth());
+                                road.getWidth(),
+                                hasObstacles(road) ? road.getObstacles()
+                                        .stream()
+                                        .map(ob -> new SimpleObstacle(ob.getId(),
+                                                                      ob.getName(),
+                                                                      ob.getCity(),
+                                                                      ob.getObstacleType(),
+                                                                      ob.getComment(),
+                                                                      ob.isImmovable()))
+                                        .collect(Collectors.toSet()) : Collections.emptySet());
     }
 
     private static boolean hasAdmins(Road road) {
         return road.getAdmins() != null && !road.getAdmins().isEmpty();
+    }
 
+    private static boolean hasObstacles(Road road) {
+        return road.getObstacles() != null && !road.getObstacles().isEmpty();
     }
 
     private static SimpleNode toSimpleNode(Node node) {
@@ -172,6 +189,49 @@ public class RoadResponse {
 
         public String getName() {
             return name;
+        }
+    }
+
+    public static class SimpleObstacle {
+        private final Long id;
+        private final String name;
+        private final String city;
+        private final ObstacleType obstacleType;
+        private final String comment;
+        private final boolean immovable;
+
+        public SimpleObstacle(Long id, String name, String city, ObstacleType obstacleType, String comment,
+                              boolean immovable) {
+            this.id = id;
+            this.name = name;
+            this.city = city;
+            this.obstacleType = obstacleType;
+            this.comment = comment;
+            this.immovable = immovable;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public ObstacleType getObstacleType() {
+            return obstacleType;
+        }
+
+        public String getCity() {
+            return city;
+        }
+
+        public String getComment() {
+            return comment;
+        }
+
+        public boolean isImmovable() {
+            return immovable;
         }
     }
 }

@@ -13,6 +13,10 @@ import static java.util.Collections.emptySet;
 
 public class RoadFactory {
 
+    public static Road simple() {
+        return simpleFromNodes("Road 1", NodeFactory.simpleWithName("Węzeł A"), NodeFactory.simpleWithName("Węzeł B"));
+    }
+
     public static Road simpleFromNodes(String name, Node start, Node end) {
         return RoadBuilder.builder()
                 .withName(name)
@@ -28,4 +32,5 @@ public class RoadFactory {
                 .withWidth(7000)
                 .build();
     }
+
 }
