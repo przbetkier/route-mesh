@@ -4,6 +4,8 @@ import dev.przbetkier.routemesh.api.request.HeightObstacleRequest;
 import dev.przbetkier.routemesh.api.response.HeightObstacleResponse;
 import dev.przbetkier.routemesh.api.response.ObstacleResponse;
 import dev.przbetkier.routemesh.domain.common.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +15,8 @@ import static dev.przbetkier.routemesh.domain.obstacle.ObstacleType.HEIGHT;
 
 @Service
 public class ObstacleService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ObstacleService.class);
 
     private final ObstacleRepository obstacleRepository;
     private final HeightObstacleService heightObstacleService;
@@ -30,6 +34,11 @@ public class ObstacleService {
         return obstacleRepository.findById(obstacleId)
                 .map(ObstacleResponse::fromObstacle)
                 .orElseThrow(() -> new EntityNotFoundException("obstacle", obstacleId));
+    }
+
+    public void deleteById(Long obstacleId) {
+        obstacleRepository.deleteById(obstacleId);
+        LOGGER.info("Removed obstacle: [{}]", obstacleId);
     }
 
     public List<ObstacleResponse> getAllByType(ObstacleType type) {

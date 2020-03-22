@@ -30,6 +30,6 @@ public class ObstacleFactory {
     }
 
     public static HeightObstacle simpleHeightObstacle(String name) {
-        return new HeightObstacle(simpleWithName("Obstacle 1"), 5000, LINE, 300, PIPE);
+        return new HeightObstacle(simpleWithName(name), 5000, LINE, 300, PIPE);
     }
 }

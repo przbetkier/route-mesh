@@ -6,6 +6,7 @@ import dev.przbetkier.routemesh.domain.node.Node;
 import dev.przbetkier.routemesh.domain.road.Road;
 import integration.IntegrationTest;
 import integration.commons.NodeFactory;
+import integration.commons.ObstacleFactory;
 import integration.commons.RoadFactory;
 import integration.commons.helpers.RestResponsePage;
 import org.junit.jupiter.api.DisplayName;
@@ -41,16 +42,42 @@ class RoadEndpointTest extends IntegrationTest {
         createRoads(roadsCount);
 
         // when
-        ResponseEntity<RestResponsePage<RoadResponse>> response = restTemplate.exchange(localUrl("/roads?page=0"),
-                                                                                        GET,
-                                                                                        null,
-                                                                                        // DO NOT REMOVE EXPLICIT TYPE (https://bugs.openjdk.java.net/browse/JDK-8203195)
-                                                                                        new ParameterizedTypeReference<RestResponsePage<RoadResponse>>() {});
+        var response = restTemplate.exchange(localUrl("/roads?page=0"), GET, null,
+                                             // DON'T REMOVE TYPE (https://bugs.openjdk.java.net/browse/JDK-8203195)
+                                             new ParameterizedTypeReference<RestResponsePage<RoadResponse>>() {});
 
         // then
         assertEquals(OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(roadsCount, response.getBody().getContent().size());
+    }
+
+    @Test
+    @DisplayName("should get single road with obstacle")
+    void shouldGetSingleRoad() {
+        // given
+
+        var obstacle = ObstacleFactory.simpleWithName("Obstacle");
+        var road = obstacle.getRoad();
+        var savedRoad = roadRepository.save(road);
+        obstacleRepository.save(obstacle);
+
+        // when
+        var response = restTemplate.getForEntity(localUrl("/roads/" + savedRoad.getId()), RoadResponse.class);
+
+        // then
+        assertEquals(OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        var body = response.getBody();
+        assertAll("properties",
+                  () -> assertEquals(savedRoad.getName(), body.getName()),
+                  () -> assertEquals(savedRoad.getDirection(), body.getRoadDirection()),
+                  () -> assertEquals(savedRoad.getStartNode().getId(), body.getStartNode().getId()),
+                  () -> assertEquals(savedRoad.getEndNode().getName(), body.getEndNode().getName()),
+                  () -> assertEquals(savedRoad.getMaxAxleLoad(), body.getMaxAxleLoad()),
+                  () -> assertEquals(savedRoad.getLines(), body.getLines()),
+                  () -> assertEquals(savedRoad.getWidth(), body.getWidth()),
+                  () -> assertEquals(1, response.getBody().getObstacles().size()));
     }
 
     @Test

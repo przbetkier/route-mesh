@@ -2,6 +2,7 @@ package dev.przbetkier.routemesh.api.response;
 
 import dev.przbetkier.routemesh.domain.admin.Admin;
 import dev.przbetkier.routemesh.domain.node.Node;
+import dev.przbetkier.routemesh.domain.obstacle.ObstacleType;
 import dev.przbetkier.routemesh.domain.road.Road;
 import dev.przbetkier.routemesh.domain.road.RoadDirection;
 import dev.przbetkier.routemesh.domain.road.RoadType;
@@ -122,7 +123,12 @@ public class RoadResponse {
                                 road.getWidth(),
                                 hasObstacles(road) ? road.getObstacles()
                                         .stream()
-                                        .map(ob -> new SimpleObstacle(ob.getId(), ob.getName()))
+                                        .map(ob -> new SimpleObstacle(ob.getId(),
+                                                                      ob.getName(),
+                                                                      ob.getCity(),
+                                                                      ob.getObstacleType(),
+                                                                      ob.getComment(),
+                                                                      ob.isImmovable()))
                                         .collect(Collectors.toSet()) : Collections.emptySet());
     }
 
@@ -189,10 +195,19 @@ public class RoadResponse {
     public static class SimpleObstacle {
         private final Long id;
         private final String name;
+        private final String city;
+        private final ObstacleType obstacleType;
+        private final String comment;
+        private final boolean immovable;
 
-        public SimpleObstacle(Long id, String name) {
+        public SimpleObstacle(Long id, String name, String city, ObstacleType obstacleType, String comment,
+                              boolean immovable) {
             this.id = id;
             this.name = name;
+            this.city = city;
+            this.obstacleType = obstacleType;
+            this.comment = comment;
+            this.immovable = immovable;
         }
 
         public Long getId() {
@@ -201,6 +216,22 @@ public class RoadResponse {
 
         public String getName() {
             return name;
+        }
+
+        public ObstacleType getObstacleType() {
+            return obstacleType;
+        }
+
+        public String getCity() {
+            return city;
+        }
+
+        public String getComment() {
+            return comment;
+        }
+
+        public boolean isImmovable() {
+            return immovable;
         }
     }
 }

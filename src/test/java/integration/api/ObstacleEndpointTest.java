@@ -7,6 +7,7 @@ import integration.IntegrationTest;
 import integration.commons.ObstacleFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -84,5 +85,27 @@ class ObstacleEndpointTest extends IntegrationTest {
 
         // then
         assertEquals(404, response.getStatusCodeValue());
+    }
+
+    @Test
+    @DisplayName("should delete obstacle")
+    public void shouldDeleteObstacle() {
+        // given
+        var obs = ObstacleFactory.simpleWithName("Obstacle 1");
+        var road = obs.getRoad();
+
+        roadRepository.save(road);
+        Obstacle obstacle = obstacleRepository.save(obs);
+        Long obstacleId = obstacle.getId();
+
+        // then
+        assertEquals(1, obstacleRepository.count());
+
+        // when
+        var response = restTemplate.exchange(localUrl("/obstacles/" + obstacleId), HttpMethod.DELETE, null, ResponseEntity.class);
+
+        // then
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(0, obstacleRepository.count());
     }
 }
