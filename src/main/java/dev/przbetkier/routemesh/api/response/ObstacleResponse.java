@@ -1,6 +1,7 @@
 package dev.przbetkier.routemesh.api.response;
 
 import dev.przbetkier.routemesh.domain.obstacle.Obstacle;
+import dev.przbetkier.routemesh.domain.obstacle.ObstacleSubtype;
 import dev.przbetkier.routemesh.domain.obstacle.ObstacleType;
 
 public class ObstacleResponse {
@@ -14,11 +15,13 @@ public class ObstacleResponse {
     private final Double milestone;
     private final String url;
     private final String comment;
-    private final ObstacleType obstacleType;
+    private final ObstacleType type;
+    private final ObstacleSubtype subtype;
     private final Long roadId;
 
     public ObstacleResponse(Long id, String name, String city, Double latitude, Double longitude, boolean immovable,
-                            Double milestone, String url, String comment, ObstacleType obstacleType, Long roadId) {
+                            Double milestone, String url, String comment, ObstacleType type, ObstacleSubtype subtype,
+                            Long roadId) {
         this.id = id;
         this.name = name;
         this.city = city;
@@ -28,7 +31,8 @@ public class ObstacleResponse {
         this.milestone = milestone;
         this.url = url;
         this.comment = comment;
-        this.obstacleType = obstacleType;
+        this.type = type;
+        this.subtype = subtype;
         this.roadId = roadId;
     }
 
@@ -72,8 +76,12 @@ public class ObstacleResponse {
         return comment;
     }
 
-    public ObstacleType getObstacleType() {
-        return obstacleType;
+    public ObstacleType getType() {
+        return type;
+    }
+
+    public ObstacleSubtype getSubtype() {
+        return subtype;
     }
 
     public static ObstacleResponse fromObstacle(Obstacle obstacle) {
@@ -86,7 +94,8 @@ public class ObstacleResponse {
                                     obstacle.getMilestone(),
                                     obstacle.getUrl(),
                                     obstacle.getComment(),
-                                    obstacle.getObstacleType(),
+                                    obstacle.getType(),
+                                    obstacle.getSubtype(),
                                     obstacle.getRoad().getId());
     }
 }

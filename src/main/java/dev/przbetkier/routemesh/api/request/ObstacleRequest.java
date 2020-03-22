@@ -11,10 +11,11 @@ public class ObstacleRequest {
     private final Double milestone;
     private final String url;
     private final String comment;
-    private final String obstacleType;
+    private final String type;
+    private final String subtype;
 
     public ObstacleRequest(Long roadId, String name, String city, Double latitude, Double longitude, boolean immovable,
-                           Double milestone, String url, String comment, String obstacleType) {
+                           Double milestone, String url, String comment, String type, String subtype) {
         this.roadId = roadId;
         this.name = name;
         this.city = city;
@@ -24,7 +25,8 @@ public class ObstacleRequest {
         this.milestone = milestone;
         this.url = url;
         this.comment = comment;
-        this.obstacleType = obstacleType;
+        this.type = type;
+        this.subtype = subtype;
     }
 
     public Long getRoadId() {
@@ -63,7 +65,11 @@ public class ObstacleRequest {
         return comment;
     }
 
-    public String getObstacleType() {
-        return obstacleType;
+    public String getType() {
+        return type;
+    }
+
+    public String getSubtype() {
+        return subtype;
     }
 }

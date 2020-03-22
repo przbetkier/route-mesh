@@ -73,7 +73,7 @@ class ObstacleEndpointTest extends IntegrationTest {
                   () -> assertEquals(obstacle.getMilestone(), obstacleResponse.getMilestone()),
                   () -> assertEquals(obstacle.getLatitude(), obstacleResponse.getLatitude()),
                   () -> assertEquals(obstacle.getLongitude(), obstacleResponse.getLongitude()),
-                  () -> assertEquals(obstacle.getObstacleType(), obstacleResponse.getObstacleType()));
+                  () -> assertEquals(obstacle.getType(), obstacleResponse.getType()));
     }
 
     @Test

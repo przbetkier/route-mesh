@@ -22,7 +22,8 @@ public class Obstacle {
     private Double milestone;
     private String url;
     private String comment;
-    private ObstacleType obstacleType;
+    private ObstacleType type;
+    private ObstacleSubtype subtype;
 
     @Relationship(type = "OBSTRUCTS")
     private Road road;
@@ -31,7 +32,7 @@ public class Obstacle {
     }
 
     public Obstacle(String name, String city, Double latitude, Double longitude, boolean immovable, Double milestone,
-                    String url, String comment, ObstacleType obstacleType, Road road) {
+                    String url, String comment, ObstacleType type, ObstacleSubtype subtype, Road road) {
         this.name = name;
         this.city = city;
         this.latitude = latitude;
@@ -40,7 +41,8 @@ public class Obstacle {
         this.milestone = milestone;
         this.url = url;
         this.comment = comment;
-        this.obstacleType = obstacleType;
+        this.type = type;
+        this.subtype = subtype;
         this.road = road;
     }
 
@@ -80,8 +82,12 @@ public class Obstacle {
         return comment;
     }
 
-    public ObstacleType getObstacleType() {
-        return obstacleType;
+    public ObstacleType getType() {
+        return type;
+    }
+
+    public ObstacleSubtype getSubtype() {
+        return subtype;
     }
 
     public Road getRoad() {

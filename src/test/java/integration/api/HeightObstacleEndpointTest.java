@@ -4,11 +4,9 @@ import com.github.dockerjava.api.model.ErrorResponse;
 import dev.przbetkier.routemesh.api.response.HeightObstacleResponse;
 import dev.przbetkier.routemesh.api.response.ObstacleResponse;
 import dev.przbetkier.routemesh.domain.obstacle.Obstacle;
-import dev.przbetkier.routemesh.domain.obstacle.ObstacleType;
 import dev.przbetkier.routemesh.domain.obstacle.height.HeightObstacle;
 import integration.IntegrationTest;
 import integration.commons.HeightObstacleRequestFactory;
-import integration.commons.ObstacleFactory;
 import integration.commons.RoadFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +17,7 @@ import java.util.stream.Collectors;
 
 import static dev.przbetkier.routemesh.domain.obstacle.ObstacleType.HEIGHT;
 import static integration.commons.ObstacleFactory.simpleHeightObstacle;
+import static integration.commons.ObstacleFactory.simpleWithName;
 import static java.util.Arrays.stream;
 import static java.util.Objects.requireNonNull;
 import static org.junit.Assert.assertNotNull;
@@ -49,7 +48,7 @@ class HeightObstacleEndpointTest extends IntegrationTest {
         assertEquals(obstacles.size(), requireNonNull(response.getBody()).length);
         stream(response.getBody()).forEach(obs -> assertAll("properties",
                                                             () -> assertTrue(obstacleNames.contains(obs.getName())),
-                                                            () -> assertEquals(HEIGHT, obs.getObstacleType())));
+                                                            () -> assertEquals(HEIGHT, obs.getType())));
     }
 
     @Test
@@ -77,9 +76,9 @@ class HeightObstacleEndpointTest extends IntegrationTest {
                   () -> assertEquals(obstacle.getMilestone(), obstacleResponse.getMilestone()),
                   () -> assertEquals(obstacle.getLatitude(), obstacleResponse.getLatitude()),
                   () -> assertEquals(obstacle.getLongitude(), obstacleResponse.getLongitude()),
-                  () -> assertEquals(obstacle.getObstacleType(), obstacleResponse.getObstacleType()));
+                  () -> assertEquals(obstacle.getType(), obstacleResponse.getType()));
         assertAll("height obstacle properties",
-                  () -> assertEquals(obstacle.getHeightObstacleType(), obstacleResponse.getHeightObstacleType()),
+                  () -> assertEquals(obstacle.getSubtype(), obstacleResponse.getSubtype()),
                   () -> assertEquals(obstacle.getLimit(), obstacleResponse.getLimit()),
                   () -> assertEquals(obstacle.getProfile(), obstacleResponse.getProfile()),
                   () -> assertEquals(obstacle.getRange(), obstacleResponse.getRange()));

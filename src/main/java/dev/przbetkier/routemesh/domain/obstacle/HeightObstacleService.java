@@ -1,7 +1,6 @@
 package dev.przbetkier.routemesh.domain.obstacle;
 
 import dev.przbetkier.routemesh.api.request.HeightObstacleRequest;
-import dev.przbetkier.routemesh.api.response.HeightObstacleResponse;
 import dev.przbetkier.routemesh.api.response.ObstacleResponse;
 import dev.przbetkier.routemesh.domain.common.DomainException;
 import dev.przbetkier.routemesh.domain.obstacle.height.HeightObstacle;
@@ -43,15 +42,15 @@ class HeightObstacleService {
                                                              request.getMilestone(),
                                                              request.getUrl(),
                                                              request.getComment(),
-                                                             fromString(request.getObstacleType()),
+                                                             fromString(request.getType()),
+                                                             ObstacleSubtype.fromString(request.getSubtype()),
                                                              roadsService.getById(request.getRoadId())
                                                                      .orElseThrow(() -> new DomainException(
                                                                              "Could not find road",
                                                                              HttpStatus.UNPROCESSABLE_ENTITY))),
                                                 request.getLimit(),
                                                 request.getProfile(),
-                                                request.getRange(),
-                                                request.getHeightObstacleType());
+                                                request.getRange());
         Obstacle obstacle = repository.save(obstacleToSave);
         return ObstacleResponse.fromObstacle(obstacle);
     }
