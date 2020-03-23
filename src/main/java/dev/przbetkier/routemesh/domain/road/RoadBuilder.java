@@ -5,7 +5,6 @@ import dev.przbetkier.routemesh.domain.node.Node;
 import dev.przbetkier.routemesh.domain.obstacle.Obstacle;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 

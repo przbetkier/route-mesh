@@ -1,66 +1,35 @@
 package integration.api;
 
 import com.github.dockerjava.api.model.ErrorResponse;
-import dev.przbetkier.routemesh.api.response.HeightObstacleResponse;
 import dev.przbetkier.routemesh.api.response.ObstacleResponse;
-import dev.przbetkier.routemesh.domain.obstacle.Obstacle;
-import dev.przbetkier.routemesh.domain.obstacle.height.HeightObstacle;
+import dev.przbetkier.routemesh.domain.obstacle.obstructions.HeightObstruction;
+import dev.przbetkier.routemesh.domain.obstacle.obstructions.HeightProfile;
+import dev.przbetkier.routemesh.domain.obstacle.obstructions.Obstructions;
 import integration.IntegrationTest;
-import integration.commons.HeightObstacleRequestFactory;
+import integration.commons.ObstacleRequestFactory;
 import integration.commons.RoadFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static dev.przbetkier.routemesh.domain.obstacle.ObstacleType.HEIGHT;
-import static integration.commons.ObstacleFactory.simpleHeightObstacle;
+import static dev.przbetkier.routemesh.domain.obstacle.obstructions.ObstacleHeightSubtype.DEVICE;
 import static integration.commons.ObstacleFactory.simpleWithName;
-import static java.util.Arrays.stream;
-import static java.util.Objects.requireNonNull;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class HeightObstacleEndpointTest extends IntegrationTest {
 
-    @Test
-    @DisplayName("should get all height obstacles")
-    public void shouldGetAllHeightObstacles() {
-        // given
-        List<HeightObstacle> obstacles = List.of(simpleHeightObstacle("Obstacle 1"),
-                                                 simpleHeightObstacle("Obstacle 2"),
-                                                 simpleHeightObstacle("Obstacle 3"));
-
-        List<String> obstacleNames = obstacles.stream().map(Obstacle::getName).collect(Collectors.toList());
-
-        obstacleRepository.saveAll(obstacles);
-
-        // when
-        ResponseEntity<HeightObstacleResponse[]> response = restTemplate.getForEntity(localUrl("/height-obstacles"),
-                                                                                      HeightObstacleResponse[].class);
-
-        // then
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(obstacles.size(), requireNonNull(response.getBody()).length);
-        stream(response.getBody()).forEach(obs -> assertAll("properties",
-                                                            () -> assertTrue(obstacleNames.contains(obs.getName())),
-                                                            () -> assertEquals(HEIGHT, obs.getType())));
-    }
 
     @Test
     @DisplayName("should get height obstacle by ID")
     public void shouldGetHeightObstacleById() {
         // given
-        var obstacle = simpleHeightObstacle("Obstacle 1");
+        var obstacle = simpleWithName("Obstacle 1");
         var saved = obstacleRepository.save(obstacle);
 
         // when
-        var response = restTemplate.getForEntity(localUrl("/height-obstacles/" + saved.getId()),
-                                                 HeightObstacleResponse.class);
+        var response = restTemplate.getForEntity(localUrl("/obstacles/" + saved.getId()), ObstacleResponse.class);
 
         // then
         assertEquals(200, response.getStatusCodeValue());
@@ -75,13 +44,16 @@ class HeightObstacleEndpointTest extends IntegrationTest {
                   () -> assertEquals(obstacle.getRoad().getId(), obstacleResponse.getRoadId()),
                   () -> assertEquals(obstacle.getMilestone(), obstacleResponse.getMilestone()),
                   () -> assertEquals(obstacle.getLatitude(), obstacleResponse.getLatitude()),
-                  () -> assertEquals(obstacle.getLongitude(), obstacleResponse.getLongitude()),
-                  () -> assertEquals(obstacle.getType(), obstacleResponse.getType()));
+                  () -> assertEquals(obstacle.getLongitude(), obstacleResponse.getLongitude()));
         assertAll("height obstacle properties",
-                  () -> assertEquals(obstacle.getSubtype(), obstacleResponse.getSubtype()),
-                  () -> assertEquals(obstacle.getLimit(), obstacleResponse.getLimit()),
-                  () -> assertEquals(obstacle.getProfile(), obstacleResponse.getProfile()),
-                  () -> assertEquals(obstacle.getRange(), obstacleResponse.getRange()));
+                  () -> assertEquals(obstacle.getHeightObstruction().getSubtype(),
+                                     obstacleResponse.getObstructions().getHeight().getSubtype()),
+                  () -> assertEquals(obstacle.getHeightObstruction().getLimit(),
+                                     obstacleResponse.getObstructions().getHeight().getLimit()),
+                  () -> assertEquals(obstacle.getHeightObstruction().getProfile(),
+                                     obstacleResponse.getObstructions().getHeight().getProfile()),
+                  () -> assertEquals(obstacle.getHeightObstruction().getRange(),
+                                     obstacleResponse.getObstructions().getHeight().getRange()));
     }
 
     @Test
@@ -100,9 +72,10 @@ class HeightObstacleEndpointTest extends IntegrationTest {
     public void shouldSaveNewObstacle() {
         // when
         var road = roadRepository.save(RoadFactory.simple());
-        var requestBody = HeightObstacleRequestFactory.simpleWithRoadId(road.getId());
+        var obstructions = new Obstructions(new HeightObstruction(2000, HeightProfile.LINE, 300, DEVICE));
+        var requestBody = ObstacleRequestFactory.simple(road.getId(), obstructions);
 
-        var response = restTemplate.postForEntity(localUrl("/height-obstacles"), requestBody, ObstacleResponse.class);
+        var response = restTemplate.postForEntity(localUrl("/obstacles"), requestBody, ObstacleResponse.class);
 
         // then
         assertEquals(201, response.getStatusCodeValue());

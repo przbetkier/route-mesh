@@ -31,8 +31,9 @@ class RoadsEndpoint {
 
     @GetMapping
     public Page<RoadResponse> getAll(@RequestParam int page,
-                                     @RequestParam(required = false, defaultValue = "20") int size) {
-        return roadsService.getAll(page, size).map(RoadResponse::fromRoad);
+                                     @RequestParam(required = false, defaultValue = "20") int size,
+                                     @RequestParam(required = false) String query) {
+        return roadsService.getAll(page, size, query).map(RoadResponse::fromRoad);
     }
 
     @GetMapping("/{roadId}")

@@ -1,10 +1,15 @@
 package dev.przbetkier.routemesh.domain.obstacle;
 
+import dev.przbetkier.routemesh.domain.obstacle.obstructions.HeightObstruction;
+import dev.przbetkier.routemesh.domain.obstacle.obstructions.ObstructionType;
 import dev.przbetkier.routemesh.domain.road.Road;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @NodeEntity
 public class Obstacle {
@@ -22,17 +27,18 @@ public class Obstacle {
     private Double milestone;
     private String url;
     private String comment;
-    private ObstacleType type;
-    private ObstacleSubtype subtype;
 
     @Relationship(type = "OBSTRUCTS")
     private Road road;
+
+    @Relationship(type = "HAS")
+    private HeightObstruction heightObstruction;
 
     public Obstacle() {
     }
 
     public Obstacle(String name, String city, Double latitude, Double longitude, boolean immovable, Double milestone,
-                    String url, String comment, ObstacleType type, ObstacleSubtype subtype, Road road) {
+                    String url, String comment, HeightObstruction heightObstruction, Road road) {
         this.name = name;
         this.city = city;
         this.latitude = latitude;
@@ -41,8 +47,7 @@ public class Obstacle {
         this.milestone = milestone;
         this.url = url;
         this.comment = comment;
-        this.type = type;
-        this.subtype = subtype;
+        this.heightObstruction = heightObstruction;
         this.road = road;
     }
 
@@ -82,15 +87,11 @@ public class Obstacle {
         return comment;
     }
 
-    public ObstacleType getType() {
-        return type;
-    }
-
-    public ObstacleSubtype getSubtype() {
-        return subtype;
-    }
-
     public Road getRoad() {
         return road;
+    }
+
+    public HeightObstruction getHeightObstruction() {
+        return heightObstruction;
     }
 }

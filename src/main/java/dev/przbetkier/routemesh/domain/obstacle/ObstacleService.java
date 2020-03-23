@@ -1,9 +1,10 @@
 package dev.przbetkier.routemesh.domain.obstacle;
 
-import dev.przbetkier.routemesh.api.request.HeightObstacleRequest;
-import dev.przbetkier.routemesh.api.response.HeightObstacleResponse;
+import dev.przbetkier.routemesh.api.request.ObstacleRequest;
 import dev.przbetkier.routemesh.api.response.ObstacleResponse;
+import dev.przbetkier.routemesh.domain.common.DomainException;
 import dev.przbetkier.routemesh.domain.common.EntityNotFoundException;
+import dev.przbetkier.routemesh.domain.road.RoadsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static dev.przbetkier.routemesh.domain.obstacle.ObstacleType.HEIGHT;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @Service
 public class ObstacleService {
@@ -19,11 +20,11 @@ public class ObstacleService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ObstacleService.class);
 
     private final ObstacleRepository obstacleRepository;
-    private final HeightObstacleService heightObstacleService;
+    private final RoadsService roadsService;
 
-    public ObstacleService(ObstacleRepository obstacleRepository, HeightObstacleService heightObstacleService) {
+    public ObstacleService(ObstacleRepository obstacleRepository, RoadsService roadsService) {
         this.obstacleRepository = obstacleRepository;
-        this.heightObstacleService = heightObstacleService;
+        this.roadsService = roadsService;
     }
 
     public List<ObstacleResponse> getAll() {
@@ -41,32 +42,21 @@ public class ObstacleService {
         LOGGER.info("Removed obstacle: [{}]", obstacleId);
     }
 
-    public List<ObstacleResponse> getAllByType(ObstacleType type) {
-        if (type == HEIGHT) {
-            return this.heightObstacleService.getAll()
-                    .stream()
-                    .map(HeightObstacleResponse::new)
-                    .collect(Collectors.toList());
-        } else {
-            throw unsupportedObstacleTypeException("Unsupported obstacle type");
-        }
-    }
+    public ObstacleResponse saveFromRequest(ObstacleRequest request) {
+        var obstacleToSave = new Obstacle(request.getName(),
+                                          request.getCity(),
+                                          request.getLatitude(),
+                                          request.getLongitude(),
+                                          request.isImmovable(),
+                                          request.getMilestone(),
+                                          request.getUrl(),
+                                          request.getComment(),
+                                          request.getObstructions().getHeight(),
+                                          roadsService.getById(request.getRoadId())
+                                                  .orElseThrow(() -> new DomainException("Could not find road",
+                                                                                         UNPROCESSABLE_ENTITY)));
 
-    public ObstacleResponse getByIdAndType(Long id, ObstacleType obstacleType) {
-        if (obstacleType == HEIGHT) {
-            return heightObstacleService.getById(id)
-                    .map(HeightObstacleResponse::new)
-                    .orElseThrow(() -> new EntityNotFoundException("obstacle", id));
-        } else {
-            throw unsupportedObstacleTypeException(obstacleType.toString());
-        }
-    }
-
-    public ObstacleResponse saveObstacle(HeightObstacleRequest request) {
-        return this.heightObstacleService.save(request);
-    }
-
-    public UnsupportedObstacleTypeException unsupportedObstacleTypeException(String type) {
-        throw new UnsupportedObstacleTypeException(String.format("Unsupported obstacle type: %s", type));
+        Obstacle obstacle = obstacleRepository.save(obstacleToSave);
+        return ObstacleResponse.fromObstacle(obstacle);
     }
 }
