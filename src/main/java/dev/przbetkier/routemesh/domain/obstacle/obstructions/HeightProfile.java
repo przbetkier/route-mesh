@@ -1,4 +1,4 @@
-package dev.przbetkier.routemesh.domain.obstacle.height;
+package dev.przbetkier.routemesh.domain.obstacle.obstructions;
 
 public enum HeightProfile {
     LINE,

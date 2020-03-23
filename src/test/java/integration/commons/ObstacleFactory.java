@@ -2,11 +2,10 @@ package integration.commons;
 
 import dev.przbetkier.routemesh.domain.obstacle.Obstacle;
 import dev.przbetkier.routemesh.domain.obstacle.ObstacleBuilder;
-import dev.przbetkier.routemesh.domain.obstacle.ObstacleSubtype;
-import dev.przbetkier.routemesh.domain.obstacle.ObstacleType;
-import dev.przbetkier.routemesh.domain.obstacle.height.HeightObstacle;
+import dev.przbetkier.routemesh.domain.obstacle.obstructions.HeightObstruction;
 
-import static dev.przbetkier.routemesh.domain.obstacle.height.HeightProfile.LINE;
+import static dev.przbetkier.routemesh.domain.obstacle.obstructions.HeightProfile.LINE;
+import static dev.przbetkier.routemesh.domain.obstacle.obstructions.ObstacleHeightSubtype.PIPE;
 import static integration.commons.helpers.LatitudeHelper.randomPolishLatitude;
 import static integration.commons.helpers.LatitudeHelper.randomPolishLongitude;
 
@@ -18,17 +17,16 @@ public class ObstacleFactory {
                 .withCity("Warszawa")
                 .immovable(true)
                 .obstructingRoad(RoadFactory.simple())
-                .withSubtype(ObstacleSubtype.PIPE)
+                .withHeightObstruction(sampleHeightObstruction())
                 .withComment("This is a simple comment")
                 .withLatitude(randomPolishLatitude())
                 .withLongitude(randomPolishLongitude())
                 .withMilestone(100.11)
-                .withObstacleType(ObstacleType.HEIGHT)
                 .withUrl("https://simpleurl.com")
                 .build();
     }
 
-    public static HeightObstacle simpleHeightObstacle(String name) {
-        return new HeightObstacle(simpleWithName(name), 5000, LINE, 300);
+    private static HeightObstruction sampleHeightObstruction() {
+        return new HeightObstruction(1111, LINE, 300, PIPE);
     }
 }

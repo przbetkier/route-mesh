@@ -1,5 +1,7 @@
 package dev.przbetkier.routemesh.api.request;
 
+import dev.przbetkier.routemesh.domain.obstacle.obstructions.Obstructions;
+
 public class ObstacleRequest {
 
     private final Long roadId;
@@ -11,11 +13,10 @@ public class ObstacleRequest {
     private final Double milestone;
     private final String url;
     private final String comment;
-    private final String type;
-    private final String subtype;
+    private final Obstructions obstructions;
 
     public ObstacleRequest(Long roadId, String name, String city, Double latitude, Double longitude, boolean immovable,
-                           Double milestone, String url, String comment, String type, String subtype) {
+                           Double milestone, String url, String comment, Obstructions obstructions) {
         this.roadId = roadId;
         this.name = name;
         this.city = city;
@@ -25,8 +26,7 @@ public class ObstacleRequest {
         this.milestone = milestone;
         this.url = url;
         this.comment = comment;
-        this.type = type;
-        this.subtype = subtype;
+        this.obstructions = obstructions;
     }
 
     public Long getRoadId() {
@@ -65,11 +65,7 @@ public class ObstacleRequest {
         return comment;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public String getSubtype() {
-        return subtype;
+    public Obstructions getObstructions() {
+        return obstructions;
     }
 }

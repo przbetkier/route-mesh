@@ -32,8 +32,11 @@ public class RoadsService {
         this.adminService = adminService;
     }
 
-    public Page<Road> getAll(int page, int size) {
-        return roadRepository.findAll(PageRequest.of(page, size, Sort.by("name")));
+    public Page<Road> getAll(int page, int size, String query) {
+        return Optional.ofNullable(query).map(q -> {
+            logger.info("Searching for roads with name matching query: {}", query);
+            return roadRepository.findAllByNameContainingIgnoreCase(query, PageRequest.of(page, size, Sort.by("name")));
+        }).orElseGet(() -> roadRepository.findAll(PageRequest.of(page, size, Sort.by("name"))));
     }
 
     public Optional<Road> getById(Long id) {
@@ -60,7 +63,6 @@ public class RoadsService {
                 .withEndNode(end)
                 .withDirection(roadRequest.getDirection())
                 .withAdmins(admins)
-
                 .withType(roadRequest.getType())
                 .withNumbers(new HashSet<>(roadRequest.getNumbers()))
                 .withKmRange(new TreeSet<>(roadRequest.getKmRange()))

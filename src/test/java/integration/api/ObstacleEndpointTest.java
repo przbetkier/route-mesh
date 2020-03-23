@@ -73,7 +73,15 @@ class ObstacleEndpointTest extends IntegrationTest {
                   () -> assertEquals(obstacle.getMilestone(), obstacleResponse.getMilestone()),
                   () -> assertEquals(obstacle.getLatitude(), obstacleResponse.getLatitude()),
                   () -> assertEquals(obstacle.getLongitude(), obstacleResponse.getLongitude()),
-                  () -> assertEquals(obstacle.getType(), obstacleResponse.getType()));
+                  () -> assertNotNull(obstacleResponse.getObstructions()));
+
+        var heightObstruction = obstacle.getHeightObstruction();
+        var heightObstructionResponse = obstacleResponse.getObstructions().getHeight();
+        assertAll("obstructions",
+                  () -> assertEquals(heightObstruction.getLimit(), heightObstructionResponse.getLimit()),
+                  () -> assertEquals(heightObstruction.getSubtype(), heightObstructionResponse.getSubtype()),
+                  () -> assertEquals(heightObstruction.getProfile(), heightObstructionResponse.getProfile()),
+                  () -> assertEquals(heightObstruction.getRange(), heightObstructionResponse.getRange()));
     }
 
     @Test
@@ -102,7 +110,10 @@ class ObstacleEndpointTest extends IntegrationTest {
         assertEquals(1, obstacleRepository.count());
 
         // when
-        var response = restTemplate.exchange(localUrl("/obstacles/" + obstacleId), HttpMethod.DELETE, null, ResponseEntity.class);
+        var response = restTemplate.exchange(localUrl("/obstacles/" + obstacleId),
+                                             HttpMethod.DELETE,
+                                             null,
+                                             ResponseEntity.class);
 
         // then
         assertEquals(200, response.getStatusCodeValue());

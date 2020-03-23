@@ -14,5 +14,6 @@ public interface RoadRepository extends Neo4jRepository<Road, Long> {
 
     Page<Road> findAll(Pageable pageable);
 
-    List<Road> findAllByDirection(RoadDirection roadDirection);
+    Page<Road> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
+
 }
