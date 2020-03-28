@@ -3,8 +3,14 @@ package integration.api;
 import com.github.dockerjava.api.model.ErrorResponse;
 import dev.przbetkier.routemesh.api.response.ObstacleResponse;
 import dev.przbetkier.routemesh.domain.obstacle.Obstacle;
+import dev.przbetkier.routemesh.domain.obstacle.obstructions.HeightObstruction;
+import dev.przbetkier.routemesh.domain.obstacle.obstructions.HeightProfile;
+import dev.przbetkier.routemesh.domain.obstacle.obstructions.Obstructions;
+import dev.przbetkier.routemesh.domain.obstacle.obstructions.WeightObstruction;
 import integration.IntegrationTest;
 import integration.commons.ObstacleFactory;
+import integration.commons.ObstacleRequestFactory;
+import integration.commons.RoadFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
@@ -13,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static dev.przbetkier.routemesh.domain.obstacle.obstructions.ObstacleHeightSubtype.DEVICE;
+import static dev.przbetkier.routemesh.domain.obstacle.obstructions.ObstacleWeightSubtype.BRIDGE;
 import static java.util.Arrays.stream;
 import static java.util.Objects.requireNonNull;
 import static org.junit.Assert.assertNotNull;
@@ -118,5 +126,35 @@ class ObstacleEndpointTest extends IntegrationTest {
         // then
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(0, obstacleRepository.count());
+    }
+
+    @Test
+    @DisplayName("should save new obstacle with height obstruction on valid request")
+    public void shouldSaveNewObstacleWithHeightObstruction() {
+        // when
+        var road = roadRepository.save(RoadFactory.simple());
+        var obstructions = new Obstructions(new HeightObstruction(2000, HeightProfile.LINE, 300, DEVICE), null);
+        var requestBody = ObstacleRequestFactory.simple(road.getId(), obstructions);
+
+        var response = restTemplate.postForEntity(localUrl("/obstacles"), requestBody, ObstacleResponse.class);
+
+        // then
+        assertEquals(201, response.getStatusCodeValue());
+        assertEquals(1, obstacleRepository.count());
+    }
+
+    @Test
+    @DisplayName("should save new obstacle with weight obstruction on valid request")
+    public void shouldSaveNewObstacleWithWeightObstruction() {
+        // when
+        var road = roadRepository.save(RoadFactory.simple());
+        var obstructions = new Obstructions(null, new WeightObstruction(2000, 100, BRIDGE));
+        var requestBody = ObstacleRequestFactory.simple(road.getId(), obstructions);
+
+        var response = restTemplate.postForEntity(localUrl("/obstacles"), requestBody, ObstacleResponse.class);
+
+        // then
+        assertEquals(201, response.getStatusCodeValue());
+        assertEquals(1, obstacleRepository.count());
     }
 }
