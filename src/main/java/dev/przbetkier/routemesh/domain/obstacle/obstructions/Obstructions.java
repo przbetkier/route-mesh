@@ -4,13 +4,15 @@ public class Obstructions {
 
     private HeightObstruction height;
     private WeightObstruction weight;
+    private WidthObstruction width;
 
     public Obstructions() {
     }
 
-    public Obstructions(HeightObstruction height, WeightObstruction weight) {
+    public Obstructions(HeightObstruction height, WeightObstruction weight, WidthObstruction width) {
         this.height = height;
         this.weight = weight;
+        this.width = width;
     }
 
     public HeightObstruction getHeight() {
@@ -19,6 +21,10 @@ public class Obstructions {
 
     public WeightObstruction getWeight() {
         return weight;
+    }
+
+    public WidthObstruction getWidth() {
+        return width;
     }
 }
 
