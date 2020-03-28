@@ -87,6 +87,6 @@ public class ObstacleResponse {
                                     obstacle.getUrl(),
                                     obstacle.getComment(),
                                     obstacle.getRoad().getId(),
-                                    new Obstructions(obstacle.getHeightObstruction()));
+                                    new Obstructions(obstacle.getHeightObstruction(), obstacle.getWeightObstruction()));
     }
 }

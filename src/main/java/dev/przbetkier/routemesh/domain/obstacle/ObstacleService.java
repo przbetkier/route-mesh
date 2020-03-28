@@ -2,8 +2,8 @@ package dev.przbetkier.routemesh.domain.obstacle;
 
 import dev.przbetkier.routemesh.api.request.ObstacleRequest;
 import dev.przbetkier.routemesh.api.response.ObstacleResponse;
-import dev.przbetkier.routemesh.domain.common.DomainException;
 import dev.przbetkier.routemesh.domain.common.EntityNotFoundException;
+import dev.przbetkier.routemesh.domain.road.Road;
 import dev.przbetkier.routemesh.domain.road.RoadsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @Service
 public class ObstacleService {
@@ -43,20 +41,21 @@ public class ObstacleService {
     }
 
     public ObstacleResponse saveFromRequest(ObstacleRequest request) {
-        var obstacleToSave = new Obstacle(request.getName(),
-                                          request.getCity(),
-                                          request.getLatitude(),
-                                          request.getLongitude(),
-                                          request.isImmovable(),
-                                          request.getMilestone(),
-                                          request.getUrl(),
-                                          request.getComment(),
-                                          request.getObstructions().getHeight(),
-                                          roadsService.getById(request.getRoadId())
-                                                  .orElseThrow(() -> new DomainException("Could not find road",
-                                                                                         UNPROCESSABLE_ENTITY)));
+        Road road = roadsService.getById(request.getRoadId())
+                .orElseThrow(() -> new EntityNotFoundException("road", request.getRoadId()));
 
-        Obstacle obstacle = obstacleRepository.save(obstacleToSave);
-        return ObstacleResponse.fromObstacle(obstacle);
+        var obstacle = new ObstacleBuilder().withName(request.getName())
+                .withCity(request.getCity())
+                .withLatitude(request.getLatitude())
+                .withLongitude(request.getLongitude())
+                .immovable(request.isImmovable())
+                .withMilestone(request.getMilestone())
+                .withUrl(request.getUrl())
+                .obstructingRoad(road)
+                .withHeightObstruction(request.getObstructions().getHeight())
+                .withWeightObstruction(request.getObstructions().getWeight())
+                .build();
+
+        return ObstacleResponse.fromObstacle(obstacleRepository.save(obstacle));
     }
 }

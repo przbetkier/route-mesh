@@ -1,15 +1,12 @@
 package dev.przbetkier.routemesh.domain.obstacle;
 
 import dev.przbetkier.routemesh.domain.obstacle.obstructions.HeightObstruction;
-import dev.przbetkier.routemesh.domain.obstacle.obstructions.ObstructionType;
+import dev.przbetkier.routemesh.domain.obstacle.obstructions.WeightObstruction;
 import dev.przbetkier.routemesh.domain.road.Road;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @NodeEntity
 public class Obstacle {
@@ -34,11 +31,15 @@ public class Obstacle {
     @Relationship(type = "HAS")
     private HeightObstruction heightObstruction;
 
+    @Relationship
+    private WeightObstruction weightObstruction;
+
     public Obstacle() {
     }
 
     public Obstacle(String name, String city, Double latitude, Double longitude, boolean immovable, Double milestone,
-                    String url, String comment, HeightObstruction heightObstruction, Road road) {
+                    String url, String comment, Road road, HeightObstruction heightObstruction,
+                    WeightObstruction weightObstruction) {
         this.name = name;
         this.city = city;
         this.latitude = latitude;
@@ -47,8 +48,9 @@ public class Obstacle {
         this.milestone = milestone;
         this.url = url;
         this.comment = comment;
-        this.heightObstruction = heightObstruction;
         this.road = road;
+        this.heightObstruction = heightObstruction;
+        this.weightObstruction = weightObstruction;
     }
 
     public Long getId() {
@@ -93,5 +95,9 @@ public class Obstacle {
 
     public HeightObstruction getHeightObstruction() {
         return heightObstruction;
+    }
+
+    public WeightObstruction getWeightObstruction() {
+        return weightObstruction;
     }
 }

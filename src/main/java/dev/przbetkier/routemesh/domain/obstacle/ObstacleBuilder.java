@@ -1,7 +1,7 @@
 package dev.przbetkier.routemesh.domain.obstacle;
 
 import dev.przbetkier.routemesh.domain.obstacle.obstructions.HeightObstruction;
-import dev.przbetkier.routemesh.domain.obstacle.obstructions.Obstructions;
+import dev.przbetkier.routemesh.domain.obstacle.obstructions.WeightObstruction;
 import dev.przbetkier.routemesh.domain.road.Road;
 
 public class ObstacleBuilder {
@@ -16,6 +16,7 @@ public class ObstacleBuilder {
     private String comment;
     private Road road;
     private HeightObstruction heightObstruction;
+    private WeightObstruction weightObstruction;
 
     public static ObstacleBuilder builder() {
         return new ObstacleBuilder();
@@ -71,6 +72,11 @@ public class ObstacleBuilder {
         return this;
     }
 
+    public ObstacleBuilder withWeightObstruction(WeightObstruction weightObstruction) {
+        this.weightObstruction = weightObstruction;
+        return this;
+    }
+
     public Obstacle build() {
         return new Obstacle(name,
                             city,
@@ -80,8 +86,9 @@ public class ObstacleBuilder {
                             milestone,
                             url,
                             comment,
+                            road,
                             heightObstruction,
-                            road);
+                            weightObstruction);
     }
 
 }
