@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/admins")
@@ -40,9 +41,9 @@ class AdminEndpoint {
         return AdminResponse.fromAdmin(adminService.createAndSave(adminRequest));
     }
 
+    @ResponseStatus(NO_CONTENT)
     @DeleteMapping("/{adminId}")
-    public ResponseEntity deleteById(@PathVariable Long adminId) {
+    public void deleteById(@PathVariable Long adminId) {
         adminService.deleteById(adminId);
-        return ResponseEntity.noContent().build();
     }
 }
