@@ -5,6 +5,7 @@ import dev.przbetkier.routemesh.security.UserDetailsImpl;
 import dev.przbetkier.routemesh.security.user.User;
 import dev.przbetkier.routemesh.security.user.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +29,8 @@ import static org.springframework.http.HttpStatus.NOT_IMPLEMENTED;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
+@Profile("!integration")
+// TODO: Write tests and adjust other to new login functionality
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;

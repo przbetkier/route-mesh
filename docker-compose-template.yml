@@ -8,6 +8,8 @@ services:
       - NEO4J_USERNAME=neo4j
       - NEO4J_PASS=neo4j
       - JWT_SECRET=secret
+      - JWT_EXPIRATION_TIME=86400000
+      - REGISTRATION_ENABLED=true
     ports:
       - "8081:8081"
     networks:
