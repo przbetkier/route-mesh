@@ -4,6 +4,7 @@ import dev.przbetkier.routemesh.security.JwtUtils;
 import dev.przbetkier.routemesh.security.UserDetailsImpl;
 import dev.przbetkier.routemesh.security.user.User;
 import dev.przbetkier.routemesh.security.user.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static dev.przbetkier.routemesh.security.user.UserRole.ADMIN;
+import static org.springframework.http.HttpStatus.NOT_IMPLEMENTED;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -33,12 +35,16 @@ public class AuthController {
     private final PasswordEncoder encoder;
     private final JwtUtils jwtUtils;
 
+    private final boolean registrationEnabled;
+
     public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository,
-                          PasswordEncoder encoder, JwtUtils jwtUtils) {
+                          PasswordEncoder encoder, JwtUtils jwtUtils,
+                          @Value("${registration.enabled}") boolean registrationEnabled) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.encoder = encoder;
         this.jwtUtils = jwtUtils;
+        this.registrationEnabled = registrationEnabled;
     }
 
     @PostMapping("/signin")
@@ -66,6 +72,12 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<SignupMessageResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+
+
+        if (!registrationEnabled) {
+            return new ResponseEntity<>(NOT_IMPLEMENTED);
+        }
+
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity.badRequest().body(new SignupMessageResponse("Error: Username is already taken!"));
         }
