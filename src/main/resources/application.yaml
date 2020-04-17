@@ -3,5 +3,6 @@ spring.data.neo4j.username: ${NEO4J_USERNAME}
 spring.data.neo4j.password: ${NEO4J_PASS}
 server.port: 8081
 
-jwtSecret: K0tiUGVTaFZtWXEzdDZ3OXokQyZGKUpATWNRZlRqV25acjR1N3ghQSVEKkctS2FQZFJnVWtYcDJzNXY4eS9CP0UoSCtNYlFlVGhWbVlxM3Q2dzl6JEMmRilKQE5jUmZValhuWnI0dTd4IUElRCpHLUthUGRTZ1ZrWXAzczV2OHkK
-jwtExpirationMs: 86400000
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-time: 86400000

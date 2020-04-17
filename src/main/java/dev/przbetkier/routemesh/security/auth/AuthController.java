@@ -1,5 +1,9 @@
-package dev.przbetkier.routemesh.security;
+package dev.przbetkier.routemesh.security.auth;
 
+import dev.przbetkier.routemesh.security.JwtUtils;
+import dev.przbetkier.routemesh.security.UserDetailsImpl;
+import dev.przbetkier.routemesh.security.user.User;
+import dev.przbetkier.routemesh.security.user.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,7 +21,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static dev.przbetkier.routemesh.security.UserRole.ADMIN;
+import static dev.przbetkier.routemesh.security.user.UserRole.ADMIN;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -38,7 +42,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.getUsername(),
@@ -61,23 +65,23 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    public ResponseEntity<SignupMessageResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
+            return ResponseEntity.badRequest().body(new SignupMessageResponse("Error: Username is already taken!"));
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
+            return ResponseEntity.badRequest().body(new SignupMessageResponse("Error: Email is already in use!"));
         }
 
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
                              signUpRequest.getEmail(),
                              encoder.encode(signUpRequest.getPassword()),
-                             List.of(ADMIN)); // FIXME: Change to user
+                             List.of(ADMIN));
 
         userRepository.save(user);
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return ResponseEntity.ok(new SignupMessageResponse("User registered successfully!"));
     }
 }

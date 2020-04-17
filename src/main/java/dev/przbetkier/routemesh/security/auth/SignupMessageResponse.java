@@ -1,9 +1,9 @@
-package dev.przbetkier.routemesh.security;
+package dev.przbetkier.routemesh.security.auth;
 
-class MessageResponse {
+class SignupMessageResponse {
     private String message;
 
-    public MessageResponse(String message) {
+    public SignupMessageResponse(String message) {
         this.message = message;
     }
 

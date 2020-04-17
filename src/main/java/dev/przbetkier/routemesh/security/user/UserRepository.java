@@ -1,4 +1,4 @@
-package dev.przbetkier.routemesh.security;
+package dev.przbetkier.routemesh.security.user;
 
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 

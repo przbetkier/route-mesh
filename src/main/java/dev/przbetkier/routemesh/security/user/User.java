@@ -1,4 +1,4 @@
-package dev.przbetkier.routemesh.security;
+package dev.przbetkier.routemesh.security.user;
 
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;

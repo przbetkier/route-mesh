@@ -1,5 +1,7 @@
 package dev.przbetkier.routemesh.security;
 
+import dev.przbetkier.routemesh.security.user.User;
+import dev.przbetkier.routemesh.security.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,4 +1,4 @@
-package dev.przbetkier.routemesh.security;
+package dev.przbetkier.routemesh.security.auth;
 
 import java.util.List;
 
