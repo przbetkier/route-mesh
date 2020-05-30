@@ -13,15 +13,17 @@ public class NodeResponse {
     private final Double longitude;
     private final Set<NodeRoad> startRoads;
     private final Set<NodeRoad> endRoads;
+    private final String type;
 
     private NodeResponse(Long id, String name, Double latitude, Double longitude, Set<NodeRoad> startRoads,
-                         Set<NodeRoad> endRoads) {
+                         Set<NodeRoad> endRoads, String type) {
         this.id = id;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.startRoads = startRoads;
         this.endRoads = endRoads;
+        this.type = type;
     }
 
     public Long getId() {
@@ -48,6 +50,10 @@ public class NodeResponse {
         return endRoads;
     }
 
+    public String getType() {
+        return type;
+    }
+
     public static NodeResponse fromNode(Node node) {
         return new NodeResponse(node.getId(),
                                 node.getName(),
@@ -60,7 +66,7 @@ public class NodeResponse {
                                 node.getEndRoads()
                                         .stream()
                                         .map(r -> new NodeRoad(r.getId(), r.getName()))
-                                        .collect(Collectors.toSet()));
+                                        .collect(Collectors.toSet()), node.getType().name());
     }
 
     public static class NodeRoad {

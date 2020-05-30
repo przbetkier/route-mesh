@@ -1,6 +1,7 @@
 package dev.przbetkier.routemesh.domain.node;
 
 import dev.przbetkier.routemesh.domain.road.Road;
+import dev.przbetkier.routemesh.domain.roundabout.Roundabout;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -23,6 +24,8 @@ public class Node {
     @Relationship(type = "ENDS", direction = Relationship.INCOMING)
     private Set<Road> endRoads = Collections.emptySet();
 
+    @Relationship(type = "IS_ROUNDABOUT")
+    private Set<Roundabout> roundabouts = Collections.emptySet();
 
     public Node() {
     }
@@ -57,5 +60,13 @@ public class Node {
 
     public Set<Road> getEndRoads() {
         return endRoads;
+    }
+
+    public NodeType getType() {
+        return roundabouts.isEmpty() ? NodeType.INTERSECTION : NodeType.ROUNDABOUT;
+    }
+
+    public Set<Roundabout> getRoundabouts() {
+        return roundabouts;
     }
 }
