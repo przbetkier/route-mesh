@@ -20,5 +20,4 @@ public class NodeService {
     public List<Node> getAllNodes() {
         return nodeRepository.findAll();
     }
-
 }
