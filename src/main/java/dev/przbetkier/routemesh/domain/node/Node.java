@@ -8,6 +8,7 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 
 @NodeEntity
@@ -25,7 +26,7 @@ public class Node {
     private Set<Road> endRoads = Collections.emptySet();
 
     @Relationship(type = "IS_ROUNDABOUT")
-    private Set<Roundabout> roundabouts = Collections.emptySet();
+    private Roundabout roundabout;
 
     public Node() {
     }
@@ -63,10 +64,10 @@ public class Node {
     }
 
     public NodeType getType() {
-        return roundabouts.isEmpty() ? NodeType.INTERSECTION : NodeType.ROUNDABOUT;
+        return Objects.isNull(roundabout) ? NodeType.INTERSECTION : NodeType.ROUNDABOUT;
     }
 
-    public Set<Roundabout> getRoundabouts() {
-        return roundabouts;
+    public Roundabout getRoundabout() {
+        return roundabout;
     }
 }

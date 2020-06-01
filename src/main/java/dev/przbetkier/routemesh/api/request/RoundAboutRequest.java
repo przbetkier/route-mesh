@@ -35,25 +35,25 @@ public class RoundAboutRequest {
     public static class ExitRequest {
 
         private final Long roadId;
-        private final Integer enterAngle;
-        private final Integer exitAngle;
+        private final Integer startAngle;
+        private final Integer endAngle;
 
-        public ExitRequest(Long roadId, Integer enterAngle, Integer exitAngle) {
+        public ExitRequest(Long roadId, Integer startAngle, Integer endAngle) {
             this.roadId = roadId;
-            this.enterAngle = enterAngle;
-            this.exitAngle = exitAngle;
+            this.startAngle = startAngle;
+            this.endAngle = endAngle;
         }
 
         public Long getRoadId() {
             return roadId;
         }
 
-        public Integer getEnterAngle() {
-            return enterAngle;
+        public Integer getStartAngle() {
+            return startAngle;
         }
 
-        public Integer getExitAngle() {
-            return exitAngle;
+        public Integer getEndAngle() {
+            return endAngle;
         }
     }
 }

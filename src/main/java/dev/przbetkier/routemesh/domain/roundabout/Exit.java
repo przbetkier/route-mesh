@@ -20,17 +20,17 @@ public class Exit {
     @EndNode
     private Road road;
 
-    private Integer enterAngle;
-    private Integer exitAngle;
+    private Integer startAngle;
+    private Integer endAngle;
 
     public Exit() {
     }
 
-    public Exit(Roundabout roundabout, Road road, Integer enterAngle, Integer exitAngle) {
+    public Exit(Roundabout roundabout, Road road, Integer startAngle, Integer endAngle) {
         this.roundabout = roundabout;
         this.road = road;
-        this.enterAngle = enterAngle;
-        this.exitAngle = exitAngle;
+        this.startAngle = startAngle;
+        this.endAngle = endAngle;
     }
 
     public Long getId() {
@@ -45,11 +45,11 @@ public class Exit {
         return road;
     }
 
-    public Integer getEnterAngle() {
-        return enterAngle;
+    public Integer getStartAngle() {
+        return startAngle;
     }
 
-    public Integer getExitAngle() {
-        return exitAngle;
+    public Integer getEndAngle() {
+        return endAngle;
     }
 }

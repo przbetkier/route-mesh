@@ -53,7 +53,10 @@ class RoundaboutEndpointTest extends IntegrationTest {
         Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
         Assertions.assertEquals(1, roundaboutRepository.count());
         Assertions.assertEquals(3, roundaboutRepository.findAll().stream().findFirst().get().getExits().size());
-        Assertions.assertEquals(1, nodeRepository.findById(roundabout.getId()).get().getRoundabouts().size());
+        Node node = nodeRepository.findById(roundabout.getId()).get();
+        Assertions.assertNotNull(node);
+        Assertions.assertEquals(request.getInnerDiameter(), node.getRoundabout().getInnerDiameter());
+        Assertions.assertEquals(request.getOuterDiameter(), node.getRoundabout().getOuterDiameter());
 
         // and
 

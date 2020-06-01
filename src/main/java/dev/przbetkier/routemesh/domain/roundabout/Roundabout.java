@@ -1,12 +1,14 @@
 package dev.przbetkier.routemesh.domain.roundabout;
 
+import dev.przbetkier.routemesh.domain.node.Node;
+import dev.przbetkier.routemesh.domain.road.Road;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @NodeEntity
 public class Roundabout {
@@ -18,12 +20,15 @@ public class Roundabout {
     private Integer outerDiameter;
 
     @Relationship(type = "EXIT")
-    private ArrayList<Exit> exits = new ArrayList<>();
+    private Set<Exit> exits = new HashSet<>();
+
+    @Relationship(type = "IS_ROUNDABOUT", direction = Relationship.INCOMING)
+    private Node node;
 
     public Roundabout() {
     }
 
-    public Roundabout(Integer innerDiameter, Integer outerDiameter, ArrayList<Exit> exits) {
+    public Roundabout(Integer innerDiameter, Integer outerDiameter, HashSet<Exit> exits) {
         this.innerDiameter = innerDiameter;
         this.outerDiameter = outerDiameter;
         this.exits = exits;
@@ -41,7 +46,15 @@ public class Roundabout {
         return outerDiameter;
     }
 
-    public List<Exit> getExits() {
+    public Set<Exit> getExits() {
         return exits;
+    }
+
+    public Node getNode() {
+        return node;
+    }
+
+    public void addExit(Road road, Integer startAngle, Integer endAngle) {
+        this.exits.add(new Exit(this, road, startAngle, endAngle));
     }
 }

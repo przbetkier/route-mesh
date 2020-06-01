@@ -1,7 +1,9 @@
 package dev.przbetkier.routemesh.api.response;
 
 import dev.przbetkier.routemesh.domain.node.Node;
+import dev.przbetkier.routemesh.domain.roundabout.Roundabout;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,9 +16,10 @@ public class NodeResponse {
     private final Set<NodeRoad> startRoads;
     private final Set<NodeRoad> endRoads;
     private final String type;
+    private final Long roundaboutId;
 
     private NodeResponse(Long id, String name, Double latitude, Double longitude, Set<NodeRoad> startRoads,
-                         Set<NodeRoad> endRoads, String type) {
+                         Set<NodeRoad> endRoads, String type, Long roundaboutId) {
         this.id = id;
         this.name = name;
         this.latitude = latitude;
@@ -24,6 +27,7 @@ public class NodeResponse {
         this.startRoads = startRoads;
         this.endRoads = endRoads;
         this.type = type;
+        this.roundaboutId = roundaboutId;
     }
 
     public Long getId() {
@@ -54,6 +58,10 @@ public class NodeResponse {
         return type;
     }
 
+    public Long getRoundaboutId() {
+        return roundaboutId;
+    }
+
     public static NodeResponse fromNode(Node node) {
         return new NodeResponse(node.getId(),
                                 node.getName(),
@@ -66,7 +74,8 @@ public class NodeResponse {
                                 node.getEndRoads()
                                         .stream()
                                         .map(r -> new NodeRoad(r.getId(), r.getName()))
-                                        .collect(Collectors.toSet()), node.getType().name());
+                                        .collect(Collectors.toSet()), node.getType().name(),
+                                Optional.ofNullable(node.getRoundabout()).map(Roundabout::getId).orElse(null));
     }
 
     public static class NodeRoad {
