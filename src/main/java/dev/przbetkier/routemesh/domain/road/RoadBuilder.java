@@ -3,6 +3,7 @@ package dev.przbetkier.routemesh.domain.road;
 import dev.przbetkier.routemesh.domain.admin.Admin;
 import dev.przbetkier.routemesh.domain.node.Node;
 import dev.przbetkier.routemesh.domain.obstacle.Obstacle;
+import dev.przbetkier.routemesh.domain.restpoint.RestPoint;
 
 import java.util.Collections;
 import java.util.Set;
@@ -23,6 +24,7 @@ public class RoadBuilder {
     private Double trafficFactor;
     private Integer width;
     private Set<Obstacle> obstacles = Collections.emptySet();
+    private Set<RestPoint> restPoints = Collections.emptySet();
 
     public static RoadBuilder builder() {
         return new RoadBuilder();
@@ -93,6 +95,11 @@ public class RoadBuilder {
         return this;
     }
 
+    public RoadBuilder withRestPoints(Set<RestPoint> restPoints) {
+        this.restPoints = restPoints;
+        return this;
+    }
+
     public Road build() {
         return new Road(name,
                         startNode,
@@ -106,6 +113,7 @@ public class RoadBuilder {
                         lines,
                         maxAxleLoad,
                         trafficFactor,
-                        width);
+                        width,
+                        restPoints);
     }
 }
