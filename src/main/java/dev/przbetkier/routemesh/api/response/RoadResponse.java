@@ -2,6 +2,7 @@ package dev.przbetkier.routemesh.api.response;
 
 import dev.przbetkier.routemesh.domain.admin.Admin;
 import dev.przbetkier.routemesh.domain.node.Node;
+import dev.przbetkier.routemesh.domain.restpoint.RestPoint;
 import dev.przbetkier.routemesh.domain.road.Road;
 import dev.przbetkier.routemesh.domain.road.RoadDirection;
 import dev.przbetkier.routemesh.domain.road.RoadType;
@@ -27,10 +28,12 @@ public class RoadResponse {
     private final Set<SimpleAdmin> admins;
     private final Integer width;
     private final Set<SimpleObstacle> obstacles;
+    private final Set<RestPoint> restPoints;
 
     public RoadResponse(Long id, String name, SimpleNode startNode, SimpleNode endNode, RoadDirection roadDirection,
                         RoadType type, Set<String> numbers, TreeSet<Double> kmRange, Integer lines, Double maxAxleLoad,
-                        Double trafficFactor, Set<SimpleAdmin> admins, Integer width, Set<SimpleObstacle> obstacles) {
+                        Double trafficFactor, Set<SimpleAdmin> admins, Integer width, Set<SimpleObstacle> obstacles,
+                        Set<RestPoint> restPoints) {
         this.id = id;
         this.startNode = startNode;
         this.endNode = endNode;
@@ -45,6 +48,7 @@ public class RoadResponse {
         this.admins = admins;
         this.width = width;
         this.obstacles = obstacles;
+        this.restPoints = restPoints;
     }
 
     public Long getId() {
@@ -130,7 +134,12 @@ public class RoadResponse {
                                                                       ob.getLongitude(),
                                                                       ob.isImmovable(),
                                                                       ob.getComment()))
-                                        .collect(Collectors.toSet()) : Collections.emptySet());
+                                        .collect(Collectors.toSet()) : Collections.emptySet(),
+                                hasRestPoints(road) ? road.getRestPoints() : Collections.emptySet());
+    }
+
+    public Set<RestPoint> getRestPoints() {
+        return restPoints;
     }
 
     private static boolean hasAdmins(Road road) {
@@ -139,6 +148,10 @@ public class RoadResponse {
 
     private static boolean hasObstacles(Road road) {
         return road.getObstacles() != null && !road.getObstacles().isEmpty();
+    }
+
+    private static boolean hasRestPoints(Road road) {
+        return road.getRestPoints() != null && !road.getRestPoints().isEmpty();
     }
 
     private static SimpleNode toSimpleNode(Node node) {
