@@ -5,6 +5,7 @@ import dev.przbetkier.routemesh.RouteMeshApplication;
 import dev.przbetkier.routemesh.domain.admin.AdminRepository;
 import dev.przbetkier.routemesh.domain.node.NodeRepository;
 import dev.przbetkier.routemesh.domain.obstacle.ObstacleRepository;
+import dev.przbetkier.routemesh.domain.obstacle.obstructions.ObstructionRepository;
 import dev.przbetkier.routemesh.domain.road.RoadRepository;
 import dev.przbetkier.routemesh.domain.roundabout.RoundaboutRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -38,6 +39,9 @@ public abstract class IntegrationTest {
     public ObstacleRepository obstacleRepository;
 
     @Autowired
+    public ObstructionRepository obstructionRepository;
+
+    @Autowired
     public RoundaboutRepository roundaboutRepository;
 
     @Autowired
@@ -62,6 +66,7 @@ public abstract class IntegrationTest {
         roadRepository.deleteAll();
         nodeRepository.deleteAll();
         obstacleRepository.deleteAll();
+        obstructionRepository.deleteAll();
         roundaboutRepository.deleteAll();
     }
 

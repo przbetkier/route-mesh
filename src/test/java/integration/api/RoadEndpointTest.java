@@ -3,6 +3,7 @@ package integration.api;
 import dev.przbetkier.routemesh.api.request.RoadRequest;
 import dev.przbetkier.routemesh.api.response.RoadResponse;
 import dev.przbetkier.routemesh.domain.node.Node;
+import dev.przbetkier.routemesh.domain.obstacle.Obstacle;
 import dev.przbetkier.routemesh.domain.road.Road;
 import integration.IntegrationTest;
 import integration.commons.NodeFactory;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
@@ -134,6 +136,34 @@ class RoadEndpointTest extends IntegrationTest {
         // expect
         assertTrue(response.getStatusCode().is2xxSuccessful());
         assertEquals(0, roadRepository.count());
+    }
+
+    @Test
+    @DisplayName("should delete road and connected obstacles and obstructions")
+    void shouldDeleteRoadAndConnectedObstacles() {
+        // given
+        Road road = roadRepository.save(RoadFactory.simple());
+        Set<Obstacle> obstacles = Set.of(
+                ObstacleFactory.simpleForRoad("obstacle2", road)
+        );
+        obstacleRepository.saveAll(obstacles);
+
+        // expect
+        assertEquals(1, roadRepository.count());
+        assertEquals(1, obstacleRepository.count());
+        assertTrue(obstructionRepository.count() > 0);
+
+        // when
+        ResponseEntity<Void> response = restTemplate.exchange(localUrl("/roads/" + road.getId()),
+                                                              DELETE,
+                                                              null,
+                                                              Void.class);
+
+        // expect
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+        assertEquals(0, roadRepository.count());
+        assertEquals(0, obstacleRepository.count());
+        assertEquals(0, obstructionRepository.count());
     }
 
     private void createRoads(int numberOfRoads) {
