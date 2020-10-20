@@ -55,6 +55,8 @@ public class ObstacleService {
                 .withHeightObstruction(request.getObstructions().getHeight())
                 .withWeightObstruction(request.getObstructions().getWeight())
                 .withWidthObstruction(request.getObstructions().getWidth())
+                .withElevationObstruction(request.getObstructions().getElevation())
+                .withCurvatureObstruction(request.getObstructions().getCurvature())
                 .build();
 
         return ObstacleResponse.fromObstacle(obstacleRepository.save(obstacle));

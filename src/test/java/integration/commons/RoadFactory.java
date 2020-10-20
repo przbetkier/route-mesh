@@ -32,5 +32,4 @@ public class RoadFactory {
                 .withWidth(7000)
                 .build();
     }
-
 }

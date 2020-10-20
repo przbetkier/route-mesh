@@ -2,6 +2,7 @@ package dev.przbetkier.routemesh.domain.road;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +16,8 @@ public interface RoadRepository extends Neo4jRepository<Road, Long> {
     Page<Road> findAll(Pageable pageable);
 
     Page<Road> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
+
+    @Query("MATCH (r:Road) WHERE id(r)=$roadId OPTIONAL MATCH (r)<-[obstructs:OBSTRUCTS]-(o:Obstacle)-[h:HAS]->(ob:Obstruction) DETACH DELETE r,obstructs,o,h,ob")
+    void deleteRoadAndConnectedObstacles(Long roadId);
 
 }

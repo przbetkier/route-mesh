@@ -5,6 +5,7 @@ import dev.przbetkier.routemesh.domain.admin.Admin;
 import dev.przbetkier.routemesh.domain.admin.AdminService;
 import dev.przbetkier.routemesh.domain.node.Node;
 import dev.przbetkier.routemesh.domain.node.NodeService;
+import dev.przbetkier.routemesh.domain.obstacle.ObstacleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -46,7 +47,7 @@ public class RoadsService {
 
     public void delete(Long roadId) {
         logger.info("Deleting road [{}]", roadId);
-        roadRepository.deleteById(roadId);
+        roadRepository.deleteRoadAndConnectedObstacles(roadId);
         logger.info("Road [{}] deleted", roadId);
     }
 

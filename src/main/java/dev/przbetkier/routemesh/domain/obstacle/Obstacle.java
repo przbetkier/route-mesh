@@ -1,5 +1,7 @@
 package dev.przbetkier.routemesh.domain.obstacle;
 
+import dev.przbetkier.routemesh.domain.obstacle.obstructions.CurvatureObstruction;
+import dev.przbetkier.routemesh.domain.obstacle.obstructions.ElevationObstruction;
 import dev.przbetkier.routemesh.domain.obstacle.obstructions.HeightObstruction;
 import dev.przbetkier.routemesh.domain.obstacle.obstructions.WeightObstruction;
 import dev.przbetkier.routemesh.domain.obstacle.obstructions.WidthObstruction;
@@ -38,12 +40,19 @@ public class Obstacle {
     @Relationship(type = "HAS")
     private WidthObstruction widthObstruction;
 
+    @Relationship(type = "HAS")
+    private ElevationObstruction elevationObstruction;
+
+    @Relationship(type = "HAS")
+    private CurvatureObstruction curvatureObstruction;
+
     public Obstacle() {
     }
 
     public Obstacle(String name, String city, Double latitude, Double longitude, boolean immovable, Double milestone,
                     String url, String comment, Road road, HeightObstruction heightObstruction,
-                    WeightObstruction weightObstruction, WidthObstruction widthObstruction) {
+                    WeightObstruction weightObstruction, WidthObstruction widthObstruction,
+                    ElevationObstruction elevationObstruction, CurvatureObstruction curvatureObstruction) {
         this.name = name;
         this.city = city;
         this.latitude = latitude;
@@ -56,6 +65,8 @@ public class Obstacle {
         this.heightObstruction = heightObstruction;
         this.weightObstruction = weightObstruction;
         this.widthObstruction = widthObstruction;
+        this.elevationObstruction = elevationObstruction;
+        this.curvatureObstruction = curvatureObstruction;
     }
 
     public Long getId() {
@@ -108,5 +119,13 @@ public class Obstacle {
 
     public WidthObstruction getWidthObstruction() {
         return widthObstruction;
+    }
+
+    public ElevationObstruction getElevationObstruction() {
+        return elevationObstruction;
+    }
+
+    public CurvatureObstruction getCurvatureObstruction() {
+        return curvatureObstruction;
     }
 }
