@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
@@ -73,5 +74,15 @@ public class RoadsService {
                 .build();
 
         return roadRepository.save(road);
+    }
+
+    public List<RoadCords> getAllRoadsWithCords() {
+        logger.info("Retrieving all roads with cords.");
+        return roadRepository.getAllRoadCords();
+    }
+
+    public void setTraffic(Long roadId, Double trafficFactor) {
+        logger.info("Setting traffic factor [{}] for road [{}].", trafficFactor, roadId);
+        roadRepository.setTrafficFactor(roadId, trafficFactor);
     }
 }

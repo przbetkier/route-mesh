@@ -43,7 +43,7 @@ public class Road {
     private TreeSet<Double> kmRange;
     private Integer lines;
     private Double maxAxleLoad;
-    // Number 0..1 representing traffic on that road
+    // Represents ratio -> current_duration/avg_duration
     private Double trafficFactor;
     private Integer width;
 
