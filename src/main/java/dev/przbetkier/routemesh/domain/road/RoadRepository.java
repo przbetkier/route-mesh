@@ -20,4 +20,15 @@ public interface RoadRepository extends Neo4jRepository<Road, Long> {
     @Query("MATCH (r:Road) WHERE id(r)=$roadId OPTIONAL MATCH (r)<-[obstructs:OBSTRUCTS]-(o:Obstacle)-[h:HAS]->(ob:Obstruction) DETACH DELETE r,obstructs,o,h,ob")
     void deleteRoadAndConnectedObstacles(Long roadId);
 
+    @Query("MATCH (r:Road)\n"
+            + "MATCH (r)-[:STARTS]-(sn:Node)\n"
+            + "MATCH (r)-[:ENDS]-(en:Node)\n"
+            + "RETURN id(r) as roadId, sn.latitude as startLatitude, sn.longitude as startLongitude, en.latitude as "
+            + "endLatitude, en.longitude as endLongitude")
+    List<RoadCords> getAllRoadCords();
+
+    @Query("MATCH (r: Road) WHERE id(r)=$roadId\n"
+            + "SET r.trafficFactor=$trafficFactor")
+    void setTrafficFactor(Long roadId, Double trafficFactor);
+
 }
