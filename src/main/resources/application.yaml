@@ -10,8 +10,12 @@ jwt:
 registration:
   enabled: ${REGISTRATION_ENABLED}
 
-traffic-client:
-  read-timeout: 1000
-  connect-timeout: 500
-  url: "https://maps.googleapis.com"
-  api-key: ${TRAFFIC_API_KEY}
+traffic:
+  scheduler:
+    enabled: ${TRAFFIC_SCHEDULER_ENABLED}
+    cron: "0 0 0 * * *"
+  client:
+    read-timeout: 1000
+    connect-timeout: 500
+    url: "https://maps.googleapis.com"
+    api-key: ${TRAFFIC_API_KEY}
