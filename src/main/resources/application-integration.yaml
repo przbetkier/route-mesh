@@ -9,3 +9,10 @@ registration:
 jwt:
   secret: secret
   expiration-time: 86400000
+
+traffic:
+  scheduler:
+    enabled: false
+    cron: "0 0 0 * * *"
+  client:
+    api-key: 'secret-api-key'
