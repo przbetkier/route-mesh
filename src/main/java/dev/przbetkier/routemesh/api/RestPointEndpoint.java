@@ -53,7 +53,7 @@ class RestPointEndpoint {
         logger.info("Received request to get all restpoints");
         var restpoints = restPointRepository.findAll()
                 .stream()
-                .map(r -> new RestpointResponse(r.getRestpointType(),
+                .map(r -> new RestpointResponse(r.getId(), r.getRestpointType(),
                                                 r.getRoadNumber(),
                                                 r.getMilestone(),
                                                 r.getGeneralSlots(),

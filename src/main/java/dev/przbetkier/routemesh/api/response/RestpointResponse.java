@@ -4,6 +4,7 @@ import dev.przbetkier.routemesh.domain.restpoint.RestpointType;
 
 public class RestpointResponse {
 
+    private final Long id;
     private final RestpointType restpointType;
     private final String roadNumber;
     private final Double milestone;
@@ -21,10 +22,11 @@ public class RestpointResponse {
     private final boolean lighting;
     private final SimpleNode node;
 
-    public RestpointResponse(RestpointType restpointType, String roadNumber, Double milestone,
+    public RestpointResponse(Long id, RestpointType restpointType, String roadNumber, Double milestone,
                              Integer generalSlots, Double occupancy, Integer slotLength, Integer slotWidth,
                              Integer hazardousSlots, Integer oversizeLength, Integer oversizeWidth, boolean security,
                              boolean cctv, boolean barriers, boolean lighting, SimpleNode node) {
+        this.id = id;
         this.restpointType = restpointType;
         this.roadNumber = roadNumber;
         this.milestone = milestone;
@@ -40,6 +42,10 @@ public class RestpointResponse {
         this.barriers = barriers;
         this.lighting = lighting;
         this.node = node;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public RestpointType getRestpointType() {
