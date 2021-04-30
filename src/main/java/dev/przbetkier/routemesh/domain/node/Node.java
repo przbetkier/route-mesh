@@ -1,5 +1,6 @@
 package dev.przbetkier.routemesh.domain.node;
 
+import dev.przbetkier.routemesh.domain.restpoint.RestPoint;
 import dev.przbetkier.routemesh.domain.road.Road;
 import dev.przbetkier.routemesh.domain.roundabout.Roundabout;
 import org.neo4j.ogm.annotation.GeneratedValue;
@@ -27,6 +28,9 @@ public class Node {
 
     @Relationship(type = "IS_ROUNDABOUT")
     private Roundabout roundabout;
+
+    @Relationship(type = "IS_RESTPOINT")
+    private RestPoint restpoint;
 
     public Node() {
     }
@@ -67,7 +71,15 @@ public class Node {
         return Objects.isNull(roundabout) ? NodeType.INTERSECTION : NodeType.ROUNDABOUT;
     }
 
+    public boolean isRestpoint() {
+        return !Objects.isNull(restpoint);
+    }
+
     public Roundabout getRoundabout() {
         return roundabout;
+    }
+
+    public RestPoint getRestpoint() {
+        return restpoint;
     }
 }
