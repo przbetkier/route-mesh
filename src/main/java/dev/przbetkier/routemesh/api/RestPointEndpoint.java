@@ -1,6 +1,7 @@
 package dev.przbetkier.routemesh.api;
 
 import dev.przbetkier.routemesh.api.request.RestPointRequest;
+import dev.przbetkier.routemesh.api.response.RestpointResponse;
 import dev.przbetkier.routemesh.domain.restpoint.RestPoint;
 import dev.przbetkier.routemesh.domain.restpoint.RestPointRepository;
 import org.slf4j.Logger;
@@ -48,9 +49,29 @@ class RestPointEndpoint {
     }
 
     @GetMapping
-    public ResponseEntity<List<RestPoint>> getAllRestpoints() {
+    public ResponseEntity<List<RestpointResponse>> getAllRestpoints() {
         logger.info("Received request to get all restpoints");
-        var restpoints = restPointRepository.findAll();
+        var restpoints = restPointRepository.findAll()
+                .stream()
+                .map(r -> new RestpointResponse(r.getRestpointType(),
+                                                r.getRoadNumber(),
+                                                r.getMilestone(),
+                                                r.getGeneralSlots(),
+                                                r.getOccupancy(),
+                                                r.getSlotLength(),
+                                                r.getSlotWidth(),
+                                                r.getHazardousSlots(),
+                                                r.getOversizeLength(),
+                                                r.getOversizeWidth(),
+                                                r.isSecurity(),
+                                                r.isCctv(),
+                                                r.isBarriers(),
+                                                r.isLighting(),
+                                                new RestpointResponse.SimpleNode(r.getNode().getId(),
+                                                                                 r.getNode().getName(),
+                                                                                 r.getNode().getLatitude(),
+                                                                                 r.getNode().getLongitude())))
+                .collect(Collectors.toList());
         return ResponseEntity.ok(restpoints);
     }
 }

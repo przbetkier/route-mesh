@@ -1,9 +1,11 @@
 package dev.przbetkier.routemesh.domain.restpoint;
 
 import dev.przbetkier.routemesh.api.request.RestPointRequest;
+import dev.przbetkier.routemesh.domain.node.Node;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
 
 @NodeEntity
 public class RestPoint {
@@ -27,6 +29,9 @@ public class RestPoint {
     private boolean cctv;
     private boolean barriers;
     private boolean lighting;
+
+    @Relationship(type = "IS_ROUNDABOUT", direction = Relationship.INCOMING)
+    private Node node;
 
     public RestPoint() {
     }
@@ -110,6 +115,10 @@ public class RestPoint {
 
     public boolean isLighting() {
         return lighting;
+    }
+
+    public Node getNode() {
+        return node;
     }
 
     public static RestPoint fromRestpointRequest(RestPointRequest request) {
