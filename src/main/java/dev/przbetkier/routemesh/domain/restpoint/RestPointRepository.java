@@ -14,7 +14,7 @@ public interface RestPointRepository extends Neo4jRepository<RestPoint, Long> {
             + "MERGE (n)-[:IS_RESTPOINT]->(rp)")
     void linkRestPointToNode(Long restPointId, Long nodeId);
 
-    @Query(value = "MATCH (r: Restpoint) WHERE id(r)=$id DETACH DELETE r")
+    @Query(value = "MATCH (r: RestPoint) WHERE id(r)=$id DETACH DELETE r")
     void deleteRestpoint(Long id);
 
     List<RestPoint> findAll();
