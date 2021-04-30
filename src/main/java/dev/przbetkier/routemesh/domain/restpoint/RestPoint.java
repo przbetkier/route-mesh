@@ -30,7 +30,7 @@ public class RestPoint {
     private boolean barriers;
     private boolean lighting;
 
-    @Relationship(type = "IS_ROUNDABOUT", direction = Relationship.INCOMING)
+    @Relationship(type = "IS_RESTPOINT", direction = Relationship.INCOMING)
     private Node node;
 
     public RestPoint() {
