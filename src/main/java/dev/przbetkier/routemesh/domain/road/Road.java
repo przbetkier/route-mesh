@@ -34,9 +34,6 @@ public class Road {
     @Relationship(type = "OBSTRUCTS", direction = Relationship.INCOMING)
     private Set<Obstacle> obstacles;
 
-    @Relationship(type = "IS_LOCATED_ON", direction = Relationship.INCOMING)
-    private Set<RestPoint> restPoints;
-
     private RoadType type;
     private Set<String> numbers;
 
@@ -52,7 +49,7 @@ public class Road {
 
     public Road(String name, Node startNode, Node endNode, RoadDirection direction, Set<Admin> admins,
                 Set<Obstacle> obstacles, RoadType type, Set<String> numbers, TreeSet<Double> kmRange, Integer lines,
-                Double maxAxleLoad, Double trafficFactor, Integer width, Set<RestPoint> restPoints) {
+                Double maxAxleLoad, Double trafficFactor, Integer width) {
         this.name = name;
         this.startNode = startNode;
         this.endNode = endNode;
@@ -66,7 +63,6 @@ public class Road {
         this.maxAxleLoad = maxAxleLoad;
         this.trafficFactor = trafficFactor;
         this.width = width;
-        this.restPoints = restPoints;
     }
 
     public Long getId() {
@@ -123,9 +119,5 @@ public class Road {
 
     public Set<Obstacle> getObstacles() {
         return obstacles;
-    }
-
-    public Set<RestPoint> getRestPoints() {
-        return restPoints;
     }
 }

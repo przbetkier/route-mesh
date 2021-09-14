@@ -24,7 +24,6 @@ public class RoadBuilder {
     private Double trafficFactor;
     private Integer width;
     private Set<Obstacle> obstacles = Collections.emptySet();
-    private Set<RestPoint> restPoints = Collections.emptySet();
 
     public static RoadBuilder builder() {
         return new RoadBuilder();
@@ -95,11 +94,6 @@ public class RoadBuilder {
         return this;
     }
 
-    public RoadBuilder withRestPoints(Set<RestPoint> restPoints) {
-        this.restPoints = restPoints;
-        return this;
-    }
-
     public Road build() {
         return new Road(name,
                         startNode,
@@ -113,7 +107,6 @@ public class RoadBuilder {
                         lines,
                         maxAxleLoad,
                         trafficFactor,
-                        width,
-                        restPoints);
+                        width);
     }
 }

@@ -1,6 +1,7 @@
 package dev.przbetkier.routemesh.api.response;
 
 import dev.przbetkier.routemesh.domain.node.Node;
+import dev.przbetkier.routemesh.domain.restpoint.RestPoint;
 import dev.przbetkier.routemesh.domain.roundabout.Roundabout;
 
 import java.util.Optional;
@@ -17,9 +18,10 @@ public class NodeResponse {
     private final Set<NodeRoad> endRoads;
     private final String type;
     private final Long roundaboutId;
+    private final Long restpointId;
 
     private NodeResponse(Long id, String name, Double latitude, Double longitude, Set<NodeRoad> startRoads,
-                         Set<NodeRoad> endRoads, String type, Long roundaboutId) {
+                         Set<NodeRoad> endRoads, String type, Long roundaboutId, Long restpointId) {
         this.id = id;
         this.name = name;
         this.latitude = latitude;
@@ -28,6 +30,7 @@ public class NodeResponse {
         this.endRoads = endRoads;
         this.type = type;
         this.roundaboutId = roundaboutId;
+        this.restpointId = restpointId;
     }
 
     public Long getId() {
@@ -62,6 +65,10 @@ public class NodeResponse {
         return roundaboutId;
     }
 
+    public Long getRestpointId() {
+        return restpointId;
+    }
+
     public static NodeResponse fromNode(Node node) {
         return new NodeResponse(node.getId(),
                                 node.getName(),
@@ -75,7 +82,8 @@ public class NodeResponse {
                                         .stream()
                                         .map(r -> new NodeRoad(r.getId(), r.getName()))
                                         .collect(Collectors.toSet()), node.getType().name(),
-                                Optional.ofNullable(node.getRoundabout()).map(Roundabout::getId).orElse(null));
+                                Optional.ofNullable(node.getRoundabout()).map(Roundabout::getId).orElse(null),
+                                Optional.ofNullable(node.getRestpoint()).map(RestPoint::getId).orElse(null));
     }
 
     public static class NodeRoad {

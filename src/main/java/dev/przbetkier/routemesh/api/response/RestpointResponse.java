@@ -1,11 +1,11 @@
-package dev.przbetkier.routemesh.api.request;
+package dev.przbetkier.routemesh.api.response;
 
 import dev.przbetkier.routemesh.domain.restpoint.RestpointType;
 
-public class RestPointRequest {
+public class RestpointResponse {
 
+    private final Long id;
     private final RestpointType restpointType;
-    private final Long nodeId;
     private final String roadNumber;
     private final Double milestone;
     private final Integer generalSlots;
@@ -20,13 +20,14 @@ public class RestPointRequest {
     private final boolean cctv;
     private final boolean barriers;
     private final boolean lighting;
+    private final SimpleNode node;
 
-    public RestPointRequest(RestpointType restpointType, Long nodeId, String roadNumber, Double milestone,
-                            Integer generalSlots, Double occupancy, Integer slotLength, Integer slotWidth,
-                            Integer hazardousSlots, Integer oversizeLength, Integer oversizeWidth, boolean security,
-                            boolean cctv, boolean barriers, boolean lighting) {
+    public RestpointResponse(Long id, RestpointType restpointType, String roadNumber, Double milestone,
+                             Integer generalSlots, Double occupancy, Integer slotLength, Integer slotWidth,
+                             Integer hazardousSlots, Integer oversizeLength, Integer oversizeWidth, boolean security,
+                             boolean cctv, boolean barriers, boolean lighting, SimpleNode node) {
+        this.id = id;
         this.restpointType = restpointType;
-        this.nodeId = nodeId;
         this.roadNumber = roadNumber;
         this.milestone = milestone;
         this.generalSlots = generalSlots;
@@ -40,14 +41,15 @@ public class RestPointRequest {
         this.cctv = cctv;
         this.barriers = barriers;
         this.lighting = lighting;
+        this.node = node;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public RestpointType getRestpointType() {
         return restpointType;
-    }
-
-    public Long getNodeId() {
-        return nodeId;
     }
 
     public String getRoadNumber() {
@@ -101,4 +103,39 @@ public class RestPointRequest {
     public boolean isLighting() {
         return lighting;
     }
+
+    public SimpleNode getNode() {
+        return node;
+    }
+
+    public static class SimpleNode {
+        private final Long id;
+        private final String name;
+        private final Double latitude;
+        private final Double longitude;
+
+        public SimpleNode(Long id, String name, Double latitude, Double longitude) {
+            this.id = id;
+            this.name = name;
+            this.latitude = latitude;
+            this.longitude = longitude;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public Double getLatitude() {
+            return latitude;
+        }
+
+        public Double getLongitude() {
+            return longitude;
+        }
+    }
+
 }
