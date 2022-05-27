@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 class TrafficScheduler {
-
-    // FIXME: Test this component
     private static final Logger logger = LoggerFactory.getLogger(TrafficScheduler.class);
 
     private final TrafficService trafficService;
@@ -21,7 +19,8 @@ class TrafficScheduler {
         this.trafficSchedulerEnabled = trafficSchedulerEnabled;
     }
 
-    @Scheduled(cron = "${traffic.scheduler.cron}")
+    // Every 30 min
+    @Scheduled(initialDelay = 1000, fixedDelay = 1800000)
     void getTrafficScheduled() {
         if (trafficSchedulerEnabled) {
             logger.info("Starting traffic scheduler.");

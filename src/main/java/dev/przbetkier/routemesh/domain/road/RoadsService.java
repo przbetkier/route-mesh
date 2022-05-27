@@ -75,13 +75,8 @@ public class RoadsService {
         return roadRepository.save(road);
     }
 
-    public List<RoadCords> getAllRoadsWithCords() {
+    public Optional<RoadCords> getRoadForTraffic(Integer skip) {
         logger.info("Retrieving all roads with cords.");
-        return roadRepository.getAllRoadCords();
-    }
-
-    public void setTraffic(Long roadId, Double trafficFactor) {
-        logger.info("Setting traffic factor [{}] for road [{}].", trafficFactor, roadId);
-        roadRepository.setTrafficFactor(roadId, trafficFactor);
+        return roadRepository.getRoadForTraffic(skip);
     }
 }

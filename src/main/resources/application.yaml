@@ -13,9 +13,10 @@ registration:
 traffic:
   scheduler:
     enabled: ${TRAFFIC_SCHEDULER_ENABLED}
-    cron: "0 0 0 * * *"
   client:
     read-timeout: 1000
     connect-timeout: 500
     url: "https://maps.googleapis.com"
     api-key: ${TRAFFIC_API_KEY}
+
+spring.data.mongodb.uri: mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@cluster0.fhj8b.mongodb.net/routemesh?retryWrites=true&w=majority
