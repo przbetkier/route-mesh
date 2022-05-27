@@ -32,7 +32,7 @@ public class TrafficService {
     public void getTraffic() {
 
         Optional<RoadCords> roadsWithCords;
-        Integer skip = 780;
+        Integer skip = 0;
         do {
             logger.info("Getting road for traffic. Skip {}", skip);
             roadsWithCords = roadsService.getRoadForTraffic(skip);
