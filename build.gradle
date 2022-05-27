@@ -26,6 +26,8 @@ repositories {
 
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-neo4j', version: "${springBootVersion}"
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: "${springBootVersion}"
+
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "${springBootVersion}"
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: "${springBootVersion}"
 

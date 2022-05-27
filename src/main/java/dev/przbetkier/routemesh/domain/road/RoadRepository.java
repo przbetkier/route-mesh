@@ -7,6 +7,7 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RoadRepository extends Neo4jRepository<Road, Long> {
@@ -27,8 +28,10 @@ public interface RoadRepository extends Neo4jRepository<Road, Long> {
             + "endLatitude, en.longitude as endLongitude")
     List<RoadCords> getAllRoadCords();
 
-    @Query("MATCH (r: Road) WHERE id(r)=$roadId\n"
-            + "SET r.trafficFactor=$trafficFactor")
-    void setTrafficFactor(Long roadId, Double trafficFactor);
-
+    @Query("MATCH (s1:Subnode)-[r:ROAD]->(s2:Subnode) WITH s1, r, s2 SKIP $skip LIMIT 1\n"
+            + "MATCH (n1:Node), (n2:Node)\n"
+            + "WHERE ID(n1)=s1.subID AND ID(n2)=s2.subID\n"
+            + "RETURN r.subID as roadId, n1.latitude as startLatitude, n1.longitude as startLongitude, n2.latitude as endLatitude, n2.longitude as endLongitude"
+    )
+    Optional<RoadCords> getRoadForTraffic(Integer skip);
 }
