@@ -19,8 +19,7 @@ class TrafficScheduler {
         this.trafficSchedulerEnabled = trafficSchedulerEnabled;
     }
 
-    // Every 2h
-    @Scheduled(initialDelay = 1000, fixedDelay = 7200000)
+    @Scheduled(initialDelay = 1000, fixedDelayString = "${traffic.scheduler.interval}")
     void getTrafficScheduled() {
         if (trafficSchedulerEnabled) {
             logger.info("Starting traffic scheduler.");

@@ -13,6 +13,7 @@ registration:
 traffic:
   scheduler:
     enabled: ${TRAFFIC_SCHEDULER_ENABLED}
+    interval: ${TRAFFIC_SCHEDULER_INTERVAL}
   client:
     read-timeout: 1000
     connect-timeout: 500
